@@ -23,16 +23,21 @@
 % https://docs.gradle.org/current/userguide/userguide.html
 
 \section{Gradle} % https://github.com/gradle/gradle 
-Gradle è un progetto open source che fornisce un tool di build automation, che può essere un ottimo sostituto di Maven. Offre un modello in grado di supportare l'intero ciclo di vita dello sviluppo del software ed è stato progettato per supportare build automation attraverso più linguaggi e piattaforme. Nel nostro caso considereremo questo tool per lo sviluppo di software Java.
+Gradle è un progetto open source che fornisce un tool di build automation, che può essere un ottimo sostituto di Maven. Offre un modello in grado di sostenere l'intero ciclo di vita dello sviluppo del software ed è stato progettato per supportare build automation attraverso più linguaggi e piattaforme. Nel nostro caso considereremo questo tool per lo sviluppo di software Java.
 
 
 \subsection{Differenze tra Gradle e Maven} % https://gradle.org/maven-vs-gradle/
-Ci sono molte differenze tra questi due tools: flessibilità, performance, gestione delle dipendenze e molto altro. La configurazione di Gradle di un progetto ha una convenzione molto più facile e comprensibile rispetto alla tediosa e a volte impossibile configurazione del pom.xml di Maven. Entrambi usano dei metodi di miglioramento della velocità di esecuzione delle build. Gradle infatti evita il lavoro di monitoraggio dei task di I/O eseguendo solo il necessario e quando possibile processare solo i files che sono cambiati (incrementality). Utilizza anche un sistema di cache riusando gli outputs di altre build Gradle con gli stessi inputs (Build Cache). Sfrutta anche un long-lived process che mantiene tutte le informazioni in memoria (Gradle Deamon). Queste 3 caratteristiche rendono Gradle molto veloce, una build eseguita con Gradle con Maven verrebbe completata con un tempo 3 volte maggiore. Tutto questo è anche possibile grazie a un sistema di esecuzioni parallele di task e intra-task.
+Ci sono molte differenze tra questi due tools: flessibilità, performance, gestione delle dipendenze e molto altro. La configurazione di Gradle in un progetto ha una convenzione molto più facile e comprensibile rispetto alla tediosa e a volte impossibile configurazione del pom.xml di Maven, anche se entrambi usano dei metodi di miglioramento della velocità di esecuzione delle build. Grandle usufruisce di:
+\begin{itemize}
+    \item \textbf{Incrementality:} evitando il lavoro di monitoraggio dei task di I/O eseguendo solo il necessario e quando possibile processare solo i files che sono cambiati;
+    \item \textbf{Build Cache:} utilizza un sistema di cache riusando gli outputs di altre build Gradle con gli stessi inputs;
+    \item \textbf{Deamon:} sfrutta un long-lived process che mantiene tutte le informazioni in memoria.
+\end{itemize}
+Queste 3 caratteristiche rendono Gradle molto veloce, ad esempio una build Gradle con Maven verrebbe completata con un tempo 3 volte maggiore. Tutto questo è anche possibile grazie a un sistema di esecuzioni parallele di task e intra-task.
 \begin{figure}[H]
 \includegraphics[scale=0.70]{performance.png}
 \end{figure} 
 % https://docs.gradle.org/current/userguide/userguide.html
-
 
 \subsection{Installazione}
 L'istallazione di Gradle può essere fatta in più modi: tramite installazione manuale o utilizzando un package manager (tutte le informazioni possono essere trovate in \textbf{\href{https://gradle.org/install/}{questo link}}). Personalmente consiglio l'utilizzo del software development kit manager \textbf{\href{http://sdkman.io/}{SDKMAN!}} che non solo permette l'installazione molto facilitata di Gradle, ma anche della JVM e di tanti altri tools.
@@ -42,20 +47,16 @@ L'installazione si basa su 2 semplici comandi:
 \begin{verbatim}
   $ curl -s "https://get.sdkman.io" | bash
   
-  $ source "$HOME/.sdkman/bin/sdkman-init.sh"
-\end{verbatim}
+  $ source "$HOME/.sdkman/bin/sdkman-init.sh" \end{verbatim}
 A questo punto se tutto è andato a buon fine SDKMAN! è stato installato correttamente, è possibile verificarlo digitando il comando su terminale:
 \begin{verbatim}
-  $ sdk version
-\end{verbatim}
+  $ sdk version \end{verbatim}
 l'output risultante dovrebbe essere qualcosa del tipo:
 \begin{verbatim}
-  SDKMAN 5.5.15+284
-\end{verbatim}
+  SDKMAN 5.5.15+284 \end{verbatim}
 Ora è possibile procedere con l'installazione di Gradle. Prima di tutto visualizziamo la lista delle versioni di Gradle:
 \begin{verbatim}
-  $ sdk list gradle
-\end{verbatim}
+  $ sdk list gradle \end{verbatim}
 L'output corrispondente sarà:
 \begin{verbatim}
 ================================================================================
@@ -80,16 +81,13 @@ Available Gradle Versions
 + - local version
 * - installed
 > - currently in use
-================================================================================
-\end{verbatim}
+================================================================================ \end{verbatim}
 La versione che vogliamo installare è quella più recente che in questo caso è la 4.4.1, possiamo quindi eseguire il comando:
 \begin{verbatim}
-  $ sdk install gradle 4.4.1
-\end{verbatim}
+  $ sdk install gradle 4.4.1 \end{verbatim}
 appena il download e l'installazione sarà finita possiamo verificare il completamento tramite:
 \begin{verbatim}
-  $ gradle -v
-\end{verbatim}
+  $ gradle -v \end{verbatim}
 che non solo stamperà su terminale la versione di Gradle, ma anche:
 \begin{itemize}
   \item Groovy (libreria usata per i file di configurazione delle build)
@@ -97,15 +95,24 @@ che non solo stamperà su terminale la versione di Gradle, ma anche:
   \item Java Virtual Machine
   \item sistema operativo in uso
 \end{itemize}
-se l'output ha queste informazioni allora Gradle è stato completamente installato. SDKMAN! si preoccupa anche di creare la variabile \$GRADLE\_HOME che è possibile visualizzare con il comando \begin{verbatim} $ echo $GRADLE_HOME \end{verbatim} Se ci sono errori di tipo Java, i problemi possono essere:
+se l'output ha queste informazioni allora Gradle è stato completamente installato. SDKMAN! si preoccupa anche di creare la variabile \$GRADLE\_HOME che è possibile visualizzare con il comando 
+\begin{verbatim} 
+    $ echo $GRADLE_HOME \end{verbatim} 
+Se ci sono errori di tipo Java, i problemi possono essere:
 \begin{itemize}
-  \item Gradle non riesce a trovare la jdk, problema risolvibile installando java con sdkman con il comando \begin{verbatim}  $ sdk install java <versione> \end{verbatim}
+  \item Gradle non riesce a trovare la jdk, problema risolvibile installando java con sdkman con il comando 
+  \begin{verbatim}
+    $ sdk install java <versione>  \end{verbatim}
   \item Java è aggiornato alla versione 9 o superiori (infatti attualmente Gradle 4.4.1 non è aggiornato per versioni superiori alla 8), basterà fare un downgrade ad una versione precedente (possibile farlo anche tramite SDKMAN!).
 \end{itemize}
-In entrambi i casi sarà necessario anche comunicare al sistema la versione da usare: \begin{verbatim}  $ sdk use java <versione_installata> \end{verbatim} per essere sicuri che è stato installata la giusta versione di java possiamo controllare gli outputs dei seguenti comandi:
+In entrambi i casi sarà necessario anche comunicare al sistema la versione da usare: 
+\begin{verbatim}  
+    $ sdk use java <versione_installata> \end{verbatim} 
+per essere sicuri che è stata installata la giusta versione di java possiamo controllare gli outputs dei seguenti comandi:
 \begin{itemize}
-  \item \begin{verbatim}  $ echo $JAVA_HOME \end{verbatim}
-  \item \begin{verbatim}  $ java -version \end{verbatim}
+  \item 
+  \begin{verbatim} $ echo $JAVA_HOME \end{verbatim}
+  \item \begin{verbatim} $ java -version \end{verbatim}
 \end{itemize}
 il primo comando dovrà restituire in output il giusto percorso della JVM installata, il secondo serve a controllare la versione java attualmente in uso.
 
@@ -116,7 +123,7 @@ Propongo nei seguenti paragrafi alcuni esempi.
 \subsection{Primo tutorial: gestione dei tasks}
 
 \subsubsection{Task e Task dependency}
-Come in Maven ci sono i goals in Gradle ci sono i task, ogni task ha il suo scopo che viene definito nella sua implementazione. Gradle si basa su build multi-task, il primo esempio si basa sulla comprensione del funzionamento delle build maven. Creiamo una cartella in cui inserire il file di configurazione della build Gradle chiamato build.gradle e modifichiamo il suo contenuto usando un editor di testo:
+Come in Maven ci sono i goals, in Gradle ci sono i task, ogniuno dei quali ha il suo scopo definito nella sua implementazione. Gradle si basa su build multi-task, il primo esempio si basa sulla comprensione del funzionamento delle build maven. Creiamo una cartella in cui inserire il file di configurazione della build Gradle chiamato build.gradle e modifichiamo il suo contenuto usando un editor di testo:
 \begin{verbatim}
 task compile {
     doLast {
@@ -140,13 +147,12 @@ task dist(dependsOn: [compile, test]) {
     doLast {
         println 'building the distribution'
     }
-}
-\end{verbatim}
+} \end{verbatim}
 a questo punto dovremmo avere una cosa di questo tipo:
 \begin{figure}[H]
 \includegraphics[scale=0.46]{gradleexamplefirst.png}
 \end{figure} 
-abbiamo creato un albero di dipendenze tra task di questo tipo:
+abbiamo creato un albero di dipendenze tra tasks di questo tipo:
 \label{taskdip}
 \begin{figure}[H]
 \includegraphics[scale=0.70]{taskdipendence.png}
@@ -159,7 +165,10 @@ abbiamo creato un albero di dipendenze tra task di questo tipo:
     \item \begin{verbatim} $ gradle dist \end{verbatim}
     \item una combinazione qualunque di 2 o più task.
 \end{itemize}
-Possiamo notare che anche se facciamo la build: \begin{verbatim} $ gradle compile test \end{verbatim} il task \textbf{compile} verrà eseguito solo una volta:
+Possiamo notare che anche se eseguiamo la build: 
+\begin{verbatim}
+    $ gradle compile test \end{verbatim}
+il task \textbf{compile} verrà eseguito solo una volta:
 \begin{verbatim}
 > Task :compile 
 compiling source
@@ -172,18 +181,16 @@ running unit tests
 
 
 BUILD SUCCESSFUL in 0s
-3 actionable tasks: 3 executed
-\end{verbatim}
-\subsubsection{Escludere i task da una build}
-È possibile escludere un task da una build in cui quel task verrebbe eseguito aggiungendo come argomento il task da escludere preceduto da -x:
+3 actionable tasks: 3 executed \end{verbatim}
+
+\subsubsection{Escludere task da una build}
+È possibile escludere un task di una build, aggiungendo come argomento il task da escludere preceduto da -x:
 \begin{verbatim}
-    $ gradle <task_da_eseguire> -x <task_da_escludere>
-\end{verbatim}
-questo viene usato per evitare di eseguire un task inutile per lo scopo della build che vogliamo fare. Riprendendo l'esempio del paragrafo precedente se andiamo ad eseguire la build:
+    $ gradle <task_da_eseguire> -x <task_da_escludere> \end{verbatim}
+questo viene usato al fine di eliminare un task inutile per lo scopo della build che abbiamo intenzione di eseguire. Riprendendo l'esempio del paragrafo precedente se andiamo ad eseguire la build:
 \begin{verbatim}
-    $ gradle dist    
-\end{verbatim}
-vediamo che vengono eseguiti tutti i task, compresi i task \textbf{test} e \textbf{compileTest}, supponendo di voler fare solo la build del sorgente possiamo scrivere:
+    $ gradle dist \end{verbatim}
+vediamo che vengono eseguiti tutti i tasks, compresi i tasks \textbf{test} e \textbf{compileTest}, supponendo di voler fare solo la build del sorgente possiamo scrivere:
 \begin{verbatim}
     $ gradle dist -x test
 \end{verbatim}
@@ -197,45 +204,37 @@ building the distribution
 
 
 BUILD SUCCESSFUL in 0s
-2 actionable tasks: 2 executed
-\end{verbatim}
+2 actionable tasks: 2 executed \end{verbatim}
 Il task \textbf{compileTest} non viene eseguito perchè dipendenza di \textbf{test}, ma non di \textbf{dist} (vedi pag. \pageref{taskdip}), escludendo il primo quindi non è necessario eseguire il task \textbf{compileTest}. Nel file di configurazione della build è possibile inserire anche un descrizione inserendo in testa al file build.gradle la seguente riga:
 \begin{verbatim}
-    description = 'Descrizione'
-\end{verbatim}
+    description = 'Descrizione' \end{verbatim}
 Questo è importante per progetti multi-builds consentendo di avere una descrizione di ogni singola build.
 
-\subsubsection{Abbreviazione del nome del task:} è possibile abbreviare il nome del task da eseguire stando però attenti a identificare unicamente il task che vogliamo eseguire, per esempio se volessi eseguire il task \textbf{compileTest} posso farlo semplicemente con il comando:
-    \begin{verbatim}
-    $ gradle comTes
-    \end{verbatim}
-    considerando i task creati precedentemente notiamo che il task è univocamente identificato.
+\subsubsection{Abbreviazione del nome del task} è possibile abbreviare il nome del task da eseguire stando però attenti ad identificare unicamente il task che vogliamo eseguire, per esempio se volessi eseguire il task \textbf{compileTest} potrei farlo semplicemente con il comando:
+\begin{verbatim}
+    $ gradle comTes \end{verbatim}
+considerando i task creati precedentemente notiamo che il task è univocamente identificato.
 
-\subsubsection{Selezionare la build da eseguire:} consideriamo che esista in una subdirectory chiamata subdir una build chiamata subbild.gradle, partendo dalla directory root è possibile eseguire questa build eseguendo il comando:
-    \begin{verbatim}
-    $ gradle -b subdir/subbuild.gradle <task_da_eseguire>
-    \end{verbatim}
-    è possibile anche indicare direttamente la project directory da usare, nel nostro caso indicheremo subdir:
-    \begin{verbatim}
-    $ gradle -p subdir
-    \end{verbatim}
+\subsubsection{Selezionare la build da eseguire} consideriamo che esista in una subdirectory chiamata subdir una build chiamata subbild.gradle, partendo dalla directory root è possibile eseguire questa build eseguendo il comando:
+\begin{verbatim}
+    $ gradle -b subdir/subbuild.gradle <task_da_eseguire> \end{verbatim}
+è possibile anche indicare direttamente la project directory da usare, nel nostro caso indicheremo subdir:
+\begin{verbatim}
+    $ gradle -p subdir  \end{verbatim}
 
-\subsubsection{Forzare l'esecuzione di un task:} a causa della Gradle cache è possibile che un task o più di uno non vengano eseguiti perchè marcati come UP-TO-DATE, in questo caso è possibile forzarne l'esecuzione con:
-    \begin{verbatim}
-    $ gradle --rerun-tasks <tasks_da_eseguire>
-    \end{verbatim}
+\subsubsection{Forzare l'esecuzione di un task} a causa della Gradle cache è possibile che un task o più di uno non vengano eseguiti perchè marcati come UP-TO-DATE, in questo caso è possibile forzarne l'esecuzione con:
+\begin{verbatim}
+    $ gradle --rerun-tasks <tasks_da_eseguire> \end{verbatim}
 
-\subsubsection{Ottenere informazioni generali:} come già detto precedentemente nel caso di progetti multi-builds è necessario avere una descrizione di ogni file di configurazione della build, per ottenere le informazioni sul progetto corrispondente alla build è possibile eseguire il task \texttt{projects}:
-    \begin{verbatim}
-    $ gradle projects
-    \end{verbatim}
+\subsubsection{Ottenere informazioni generali} come già detto precedentemente nel caso di progetti multi-builds è necessario avere una descrizione di ogni file di configurazione della build, per ottenere le informazioni sul progetto corrispondente alla build è possibile eseguire il task \texttt{projects}:
+\begin{verbatim}
+    $ gradle projects \end{verbatim}
 
-\subsubsection{Ottenere informazioni sui tasks:} è possibile ricavare una lista dei tasks default eseguendo la build del task \texttt{tasks}:
-    \begin{verbatim}
-    $ gradle tasks
-    \end{verbatim}
-    possiamo notare che l'output non mostra tutti i task, ma solo quelli predefiniti:
-    \begin{verbatim}
+\subsubsection{Ottenere informazioni sui tasks} è possibile ricavare una lista dei tasks default eseguendo la build del task \texttt{tasks}:
+\begin{verbatim}
+    $ gradle tasks \end{verbatim}
+possiamo notare che l'output non mostra tutti i task, ma solo quelli predefiniti:
+\begin{verbatim}
 > Task :tasks 
 
 ------------------------------------------------------------
@@ -266,12 +265,10 @@ To see more detail about a task, run gradle help --task <task>
 
 
 BUILD SUCCESSFUL in 0s
-1 actionable task: 1 executed
-    \end{verbatim}
-    come dice l'output, per visualizzare la lista di tutti i tasks è necessario eseguire la build del task \texttt{tasks} con argomento --all:
-    \begin{verbatim}
-    $ gradle tasks --all
-    \end{verbatim}
+1 actionable task: 1 executed \end{verbatim}
+come dice l'output, per visualizzare la lista di tutti i tasks è necessario eseguire la build del task \texttt{tasks} con argomento --all:
+\begin{verbatim}
+    $ gradle tasks --all \end{verbatim}
     il risultato di questa build sarà molto più specifico rispetto al precedente. Possiamo notare che a differenza degli altri tasks quelli che abbiamo creato noi sono sprovvisti di una descrizione, per aggiungerla basterà inserire un campo \texttt{description} all'interno della definizione del task:
     \begin{verbatim}
 task dist(dependsOn: [compile, test]) {
@@ -279,14 +276,11 @@ task dist(dependsOn: [compile, test]) {
     doLast {
         println 'building the distribution'
     }
-}
-    \end{verbatim}
-    rieseguendo il comando sopra otterremo una descrizione anche per il \texttt{dist}.
-    Per ottenere informazioni più specifiche è possibile usare la build del task help seguito da --task e il nome del task:
-    \begin{verbatim}
-    $ gradle help --task <task>
-    \end{verbatim}
-    quello che vedremo sarà un riepilogo generale del task.
+} \end{verbatim}
+rieseguendo il comando sopra otterremo una descrizione anche per il \texttt{dist}. Per ottenere informazioni più specifiche è possibile usare la build del task help seguito da --task e il nome del task:
+\begin{verbatim}
+    $ gradle help --task <task> \end{verbatim}
+quello che vedremo sarà un riepilogo generale del task.
 
 
 \end{flushleft}
