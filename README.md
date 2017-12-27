@@ -1,9 +1,17 @@
+[English](#english) :point_left:
+
 # Italiano
 # ATTSW_Exam
 Questa repository mira a mantenere la storia delle modifiche apportate alla relazione e ai tutorials per l'esame di Advanced Techniques and Tools for Software Development.
 
 # Descrizione
 Il contenuto di questa repository è uno studio sull'efficacia e sulla semplicità del tool [Gradle](https://gradle.org/).
+
+# Contenuti
+* [*Relazione*](https://github.com/Wabri/ATTSW_Exam/tree/master/relation)
+* [*Tutorials*](https://github.com/Wabri/ATTSW_Exam/tree/master/gradle.example)
+
+***
 
 # English
 # ATTSW_Exam
