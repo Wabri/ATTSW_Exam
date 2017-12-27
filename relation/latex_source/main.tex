@@ -100,7 +100,7 @@ che non solo stamperà su terminale la versione di Gradle, ma anche:
 se l'output ha queste informazioni allora Gradle è stato completamente installato. SDKMAN! si preoccupa anche di creare la variabile \$GRADLE\_HOME che è possibile visualizzare con il comando \begin{verbatim} $ echo $GRADLE_HOME \end{verbatim} Se ci sono errori di tipo Java, i problemi possono essere:
 \begin{itemize}
   \item Gradle non riesce a trovare la jdk, problema risolvibile installando java con sdkman con il comando \begin{verbatim}  $ sdk install java <versione> \end{verbatim}
-  \item Java è aggiornato alla versione 9 o superiori (infatti attualmente Gradle non è aggiornato per versioni superiori alla 8), basterà fare un downgrade ad una versione precedente (possibile farlo anche tramite SDKMAN!).
+  \item Java è aggiornato alla versione 9 o superiori (infatti attualmente Gradle 4.4.1 non è aggiornato per versioni superiori alla 8), basterà fare un downgrade ad una versione precedente (possibile farlo anche tramite SDKMAN!).
 \end{itemize}
 In entrambi i casi sarà necessario anche comunicare al sistema la versione da usare: \begin{verbatim}  $ sdk use java <versione_installata> \end{verbatim} per essere sicuri che è stato installata la giusta versione di java possiamo controllare gli outputs dei seguenti comandi:
 \begin{itemize}
@@ -110,10 +110,10 @@ In entrambi i casi sarà necessario anche comunicare al sistema la versione da u
 il primo comando dovrà restituire in output il giusto percorso della JVM installata, il secondo serve a controllare la versione java attualmente in uso.
 
 
-\section{Tutorial} % https://docs.gradle.org/current/userguide/tutorial_gradle_command_line.html
+\section{Tutorial} % https://docs.gradle.org/current/userguide/userguide.html
 Propongo nei seguenti paragrafi alcuni esempi.
 
-\subsection{Primo tutorial: gestione dei task}
+\subsection{Primo tutorial: gestione dei tasks}
 
 \subsubsection{Task e Task dependency}
 Come in Maven ci sono i goals in Gradle ci sono i task, ogni task ha il suo scopo che viene definito nella sua implementazione. Gradle si basa su build multi-task, il primo esempio si basa sulla comprensione del funzionamento delle build maven. Creiamo una cartella in cui inserire il file di configurazione della build Gradle chiamato build.gradle e modifichiamo il suo contenuto usando un editor di testo:
@@ -144,13 +144,13 @@ task dist(dependsOn: [compile, test]) {
 \end{verbatim}
 a questo punto dovremmo avere una cosa di questo tipo:
 \begin{figure}[H]
-\includegraphics[scale=0.40]{gradleexamplefirst.png}
+\includegraphics[scale=0.46]{gradleexamplefirst.png}
 \end{figure} 
 abbiamo creato un albero di dipendenze tra task di questo tipo:
 \label{taskdip}
 \begin{figure}[H]
 \includegraphics[scale=0.70]{taskdipendence.png}
-\end{figure} 
+\end{figure}
 è possibile fare diverse build con questa configurazione:
 \begin{itemize}
     \item \begin{verbatim} $ gradle compile \end{verbatim}
@@ -199,17 +199,19 @@ building the distribution
 BUILD SUCCESSFUL in 0s
 2 actionable tasks: 2 executed
 \end{verbatim}
-Il task \textbf{compileTest} non viene eseguito perchè dipendenza di \textbf{test}, ma non di \textbf{dist} (vedi pag. \pageref{taskdip}), escludendo il primo quindi non è necessario eseguire il task \textbf{compileTest}.
+Il task \textbf{compileTest} non viene eseguito perchè dipendenza di \textbf{test}, ma non di \textbf{dist} (vedi pag. \pageref{taskdip}), escludendo il primo quindi non è necessario eseguire il task \textbf{compileTest}. Nel file di configurazione della build è possibile inserire anche un descrizione inserendo in testa al file build.gradle la seguente riga:
+\begin{verbatim}
+    description = 'Descrizione'
+\end{verbatim}
+Questo è importante per progetti multi-builds consentendo di avere una descrizione di ogni singola build.
 
-\subsubsection{Approfondimenti}
-I comandi eseguibili sono svariati:
-\begin{itemize}
-    \item \textbf{Abbreviazione del nome del task:} è possibile abbreviare il nome del task da eseguire stando però attenti a identificare unicamente il task che vogliamo eseguire, per esempio se volessi eseguire il task \textbf{compileTest} posso farlo semplicemente con il comando:
+\subsubsection{Abbreviazione del nome del task:} è possibile abbreviare il nome del task da eseguire stando però attenti a identificare unicamente il task che vogliamo eseguire, per esempio se volessi eseguire il task \textbf{compileTest} posso farlo semplicemente con il comando:
     \begin{verbatim}
     $ gradle comTes
     \end{verbatim}
     considerando i task creati precedentemente notiamo che il task è univocamente identificato.
-    \item \textbf{Selezionare la build da eseguire:} consideriamo che esista in una subdirectory chiamata subdir una build chiamata subbild.gradle, partendo dalla directory root è possibile eseguire questa build eseguendo il comando:
+
+\subsubsection{Selezionare la build da eseguire:} consideriamo che esista in una subdirectory chiamata subdir una build chiamata subbild.gradle, partendo dalla directory root è possibile eseguire questa build eseguendo il comando:
     \begin{verbatim}
     $ gradle -b subdir/subbuild.gradle <task_da_eseguire>
     \end{verbatim}
@@ -217,9 +219,75 @@ I comandi eseguibili sono svariati:
     \begin{verbatim}
     $ gradle -p subdir
     \end{verbatim}
-\end{itemize}
 
-% https://docs.gradle.org/current/userguide/tutorial_gradle_command_line.html#sec:rerun_tasks
+\subsubsection{Forzare l'esecuzione di un task:} a causa della Gradle cache è possibile che un task o più di uno non vengano eseguiti perchè marcati come UP-TO-DATE, in questo caso è possibile forzarne l'esecuzione con:
+    \begin{verbatim}
+    $ gradle --rerun-tasks <tasks_da_eseguire>
+    \end{verbatim}
+
+\subsubsection{Ottenere informazioni generali:} come già detto precedentemente nel caso di progetti multi-builds è necessario avere una descrizione di ogni file di configurazione della build, per ottenere le informazioni sul progetto corrispondente alla build è possibile eseguire il task \texttt{projects}:
+    \begin{verbatim}
+    $ gradle projects
+    \end{verbatim}
+
+\subsubsection{Ottenere informazioni sui tasks:} è possibile ricavare una lista dei tasks default eseguendo la build del task \texttt{tasks}:
+    \begin{verbatim}
+    $ gradle tasks
+    \end{verbatim}
+    possiamo notare che l'output non mostra tutti i task, ma solo quelli predefiniti:
+    \begin{verbatim}
+> Task :tasks 
+
+------------------------------------------------------------
+All tasks runnable from root project - Descrizione
+------------------------------------------------------------
+
+Build Setup tasks
+-----------------
+init - Initializes a new Gradle build.
+wrapper - Generates Gradle wrapper files.
+
+Help tasks
+----------
+buildEnvironment - Displays all buildscript dependencies declared in root project 'first'.
+components - Displays the components produced by root project 'first'. [incubating]
+dependencies - Displays all dependencies declared in root project 'first'.
+dependencyInsight - Displays the insight into a specific dependency in root project 'first'.
+dependentComponents - Displays the dependent components of components in root project 'first'. [incubating]
+help - Displays a help message.
+model - Displays the configuration model of root project 'first'. [incubating]
+projects - Displays the sub-projects of root project 'first'.
+properties - Displays the properties of root project 'first'.
+tasks - Displays the tasks runnable from root project 'first'.
+
+To see all tasks and more detail, run gradle tasks --all
+
+To see more detail about a task, run gradle help --task <task>
+
+
+BUILD SUCCESSFUL in 0s
+1 actionable task: 1 executed
+    \end{verbatim}
+    come dice l'output, per visualizzare la lista di tutti i tasks è necessario eseguire la build del task \texttt{tasks} con argomento --all:
+    \begin{verbatim}
+    $ gradle tasks --all
+    \end{verbatim}
+    il risultato di questa build sarà molto più specifico rispetto al precedente. Possiamo notare che a differenza degli altri tasks quelli che abbiamo creato noi sono sprovvisti di una descrizione, per aggiungerla basterà inserire un campo \texttt{description} all'interno della definizione del task:
+    \begin{verbatim}
+task dist(dependsOn: [compile, test]) {
+    description = 'Build distribution'
+    doLast {
+        println 'building the distribution'
+    }
+}
+    \end{verbatim}
+    rieseguendo il comando sopra otterremo una descrizione anche per il \texttt{dist}.
+    Per ottenere informazioni più specifiche è possibile usare la build del task help seguito da --task e il nome del task:
+    \begin{verbatim}
+    $ gradle help --task <task>
+    \end{verbatim}
+    quello che vedremo sarà un riepilogo generale del task.
+
 
 \end{flushleft}
 \end{document}
