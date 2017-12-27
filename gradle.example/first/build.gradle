@@ -1,3 +1,5 @@
+description = 'Descrizione'
+
 task compile {
     doLast {
         println 'compiling source'
@@ -17,6 +19,7 @@ task test(dependsOn: [compile, compileTest]) {
 }
 
 task dist(dependsOn: [compile, test]) {
+    description = 'Build distribution'
     doLast {
         println 'building the distribution'
     }
