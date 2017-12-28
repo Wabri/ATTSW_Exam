@@ -14,11 +14,11 @@ e controllare nuovamente la versione.
 task wrapper(type: Wrapper) {
     gradleVersion = '2.0'
 }
-```
-eseguire il task wrapper:
-`./gradlew wrapper`
-controllare che la versione sia quella giusta:
-`./gradlew --version`
+``` 
+eseguire il task wrapper: 
+`./gradlew wrapper` 
+controllare che la versione sia quella giusta: 
+`./gradlew --version` 
 ripristinare la versione precedente.
 
 7. modificare la versione direttamente nel file gradle/wrapper/gradle-wrapper.properties nell'ultima linea ci dovrebbe essere:
