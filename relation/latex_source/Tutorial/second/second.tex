@@ -1,0 +1,49 @@
+\subsection{Secondo tutorial: Gradle Wrapper}
+Molto spesso prima di poter usufruire di uno strumento di sviluppo è necessaria una installazione. Gradle mette a disposizione uno script che permette di usare tutte le sue funzionalità evitando di installare Gradle su tutte le macchine di sviluppo, questo strumetno viene chiamato Gradle Wrapper. Se in un progetto è stato settato il Wrapper è possibile eseguire le builds direttamente dalla root del progetto con il comando:
+\begin{verbatim}
+    $ ./gradlew <task> \end{verbatim}
+Se più persone lavorano a un progetto può capitare che ci siano differenze tra le versioni di uno strumento, nel caso del wrapper non è possibile sbagliare perchè la sua versione è insita durante la sua creazione o durante il suo upgrade (o downgrade). Quindi è sempre consigliato l'uso del wrapper e lasciare tutte le sue informazioni anche nella cartella principale del VCS usato.
+
+\subsubsection{Aggiungere il Wrapper ad un progetto}
+Per poter usufruire del wrapper è necessario eseguire il comando:
+\begin{verbatim}
+    $ gradle wrapper \end{verbatim}
+è possibile trovare le versioni del Wrapper nella directory locale in cui è stato installato Gradle solitamente \textit{\$HOME/.gradle/wrapper/dists}. Il comando precedente creerà 4 files:
+\begin{itemize}
+    \item \textbf{gradlew}: script del wrapper per sistemi Unix
+    \item \textbf{gradlew.bat}: file batch per sistemi Windows
+    \item \textbf{gradle/wrapper/gradle-wrapper.properties}: proprietà del wrapper
+    \item \textbf{gradle/wrapper/gradle-wrapper.jar}: file jar del wrapper
+\end{itemize}
+per usare una versione Gradle specifica è possibile usare 3 metodi:
+\begin{enumerate}
+    \item eseguire il solito comando con l'aggiunta dell'argomento --gradle-version:
+\begin{verbatim}
+    $ gradle wrapper --gradle-version <numero_versione> \end{verbatim}
+oppure se già inserito il wrapper:
+\begin{verbatim}
+    $ ./gradlew wrapper --gradle-version <numero_versione> \end{verbatim}
+per esempio se volessimo passare dalla versione 4.4.1 alla versione 2.0 basterà eseguire il comando:
+\begin{verbatim}
+    $ ./gradlew wrapper --gradle-version 2.0 \end{verbatim}
+per aggiornare la versione gradle usata dal wrapper basterà eseguire:
+\begin{verbatim}
+    $ ./gradlew wrapper \end{verbatim}
+    \item modificare direttamente il file gradle-wrapper.properties in cui nell'ultima riga ci sarà la versione usata dal Wrapper:
+\begin{verbatim}
+    distributionUrl=https\://services.gradle.org/distributions/gradle-4.4.1-bin.zip \end{verbatim}
+    per passare alla versione 2.0 possiamo modificare questa riga con:
+\begin{verbatim}
+    distributionUrl=https\://services.gradle.org/distributions/gradle-2.0-bin.zip \end{verbatim}
+    \item infine possiamo modificare la definizione del task \texttt{wrapper} della build di gradle, per farlo è necessario creare (se non è già stato fatto) il file build.gradle e aggiungere:
+\begin{verbatim}
+    task wrapper(type: Wrapper) {
+        gradleVersion = '2.0'
+    } \end{verbatim}
+    ed eseguire nuovamente il task \texttt{wrapper}:
+\begin{verbatim}
+    $ ./gradlew wrapper \end{verbatim}
+\end{enumerate}
+in ogni caso possiamo visualizzare la versione usata dal wrapper con il comando:
+\begin{verbatim}
+    $ ./gradlew --version \end{verbatim}
