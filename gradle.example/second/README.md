@@ -19,7 +19,7 @@ eseguire il task wrapper:
 `./gradlew wrapper`
 controllare che la versione sia quella giusta:
 `./gradlew --version`
-ripristinare la versione 4.4.1
+ripristinare la versione precedente
 7. modificare la versione direttamente nel file gradle/wrapper/gradle-wrapper.properties nell'ultima linea ci dovrebbe essere:
 `distributionUrl=https\://services.gradle.org/distributions/gradle-4.4.1-bin.zip`
 modificarla con:
