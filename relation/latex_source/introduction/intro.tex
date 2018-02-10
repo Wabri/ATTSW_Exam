@@ -84,11 +84,10 @@ Se ci sono errori di tipo Java, i problemi possono essere:
 \end{itemize}
 In entrambi i casi sarà necessario anche comunicare al sistema la versione da usare: 
 \begin{verbatim}  
-    $ sdk use java <versione_installata> \end{verbatim} 
+    $ sdk dafault java <versione_installata> \end{verbatim} 
 per essere sicuri che è stata installata la giusta versione di java possiamo controllare gli outputs dei seguenti comandi:
 \begin{itemize}
-  \item 
-  \begin{verbatim} $ echo $JAVA_HOME \end{verbatim}
+  \item \begin{verbatim} $ echo $JAVA_HOME \end{verbatim}
   \item \begin{verbatim} $ java -version \end{verbatim}
 \end{itemize}
 il primo comando dovrà restituire in output il giusto percorso della JVM installata, il secondo serve a controllare la versione java attualmente in uso.
