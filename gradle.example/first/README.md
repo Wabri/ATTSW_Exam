@@ -49,7 +49,7 @@ task mainTask(dependsOn: [dependenceOne, dependenceTwo]) {
 `gradle dependenceZero dependenceTwo`
 5. eseguire la build usando una abbreviazione:
 `gradle maTa`
-6. eseguire la build precedente escludendo il task `dependenceOne`:
+6. eseguire la build precedente escludendo il task dependenceOne:
 `gradle mainTask -x dependenceOne`
 7. Creare una build differente in una subdirectory rispetto alla posizione iniziale: 
 ```
