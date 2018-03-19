@@ -1,6 +1,16 @@
 description = 'Example of Task'
 
-task dependenceOne {
+task dependenceZero {
+	description = 'Build Dependence Zero'
+	doFirst {
+		println 'First Zero'
+	}
+	doLast {
+		println 'Last Zero'
+	}
+}
+
+task dependenceOne(dependsOn: [dependenceZero]) {
 	description = 'Build Dependence One'
 	doFirst {
 		println 'First One'
@@ -11,7 +21,7 @@ task dependenceOne {
 }
 
 task dependenceTwo {
-	description = 'Build Dependence Two'	
+	description = 'Build Dependence Two'
 	doFirst {
 		println 'First Two'
 	}

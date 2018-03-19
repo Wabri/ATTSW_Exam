@@ -1,69 +1,79 @@
-1. creare una cartella gradle.example/first
-2. creare il file build.gradle contenente:
+1. Creare una cartella gradle.example/first
+2. All'interno della nuova cartella creare il file build.gradle contenente:
 ```
-description =  'Descrizione'
+description = 'Example of Task'
 
-task compile {
-    doLast {
-        println 'compiling source'
-    }
+task dependenceZero {
+	description = 'Build Dependence Zero'
+	doFirst {
+		println 'First Zero'
+	}
+	doLast {
+		println 'Last Zero'
+	}
 }
 
-task compileTest(dependsOn: compile) {
-    doLast {
-        println 'compiling unit tests'
-    }
+task dependenceOne(dependsOn: [dependenceZero]) {
+	description = 'Build Dependence One'
+	doFirst {
+		println 'First One'
+	}
+	doLast {
+		println 'Last One'
+	}
 }
 
-task test(dependsOn: [compile, compileTest]) {
-    doLast {
-        println 'running unit tests'
-    }
+task dependenceTwo {
+	description = 'Build Dependence Two'
+	doFirst {
+		println 'First Two'
+	}
+	doLast {
+		println 'Last Two'
+	}
 }
 
-task dist(dependsOn: [compile, test]) {
-    doLast {
-        println 'building the distribution'
-    }
+task mainTask(dependsOn: [dependenceOne, dependenceTwo]) {
+	description = 'Build Main Task'
+	doFirst {
+		println 'First MainTask'
+	}
+	doLast {
+		println 'Last MainTask'
+	}
 }
 ```
 3. eseguire la build:
-`gradle dist`
-4. eseguire la build precedente escludendo il task `test`:
-`gradle dist -x test`
+`gradle mainTask`
+4. Eseguire la build multi-tasks:
+`gradle dependenceZero dependenceTwo`
 5. eseguire la build usando una abbreviazione:
-`gradle coTe`
-6. creare una build differente, chiamandola subbuild.gradle, in una subdirectory rispetto alla posizione iniziale contenente: 
+`gradle maTa`
+6. eseguire la build precedente escludendo il task `dependenceOne`:
+`gradle mainTask -x dependenceOne`
+7. Creare una build differente in una subdirectory rispetto alla posizione iniziale: 
 ```
-description =  'Descrizione della subdirectory'
+description = 'Sub directory'
 
-task hello {
-    doLast {
-        println "using build file '$buildFile.name' in '$buildFile.parentFile.name'."
-    }
+task subMainTask {
+	description = 'Sub Build Main Task'
+	doFirst {
+		println 'First MainTask'
+	}
+	doLast {
+		println 'Last MainTask'
+	}
 }
-``` 
-7. eseguire il task hello della build appena creata partendo dalla directory root:
-`gradle -b subdir/myproject.gradle hello`
-8. selezionare la subdirectory precedentemente creata come project directory principale:
-`gradle -p subdir`
-9. forzare l'esecuzione di un task marcato come UP-TO-DATE:
+```
+8. Eseguire il task subMainTask della build appena creata partendo dalla directory root:
+`gradle -b subdir/build.gradle suMT`
+9. Forzare l'esecuzione di un task marcato come UP-TO-DATE:
 `gradle --rerun-tasks dist`
-10. ottenere informazioni riguardo la build con il comando:
-`gradle projects`
-11. ottenere la lista dei tasks di default:
+10. Ottenere la lista dei tasks di default:
 `gradle tasks`
-12. ottenere la lista di tutti i tasks:
+11. Ottenere la lista di tutti i tasks:
 `gradle tasks --all`
-13. aggiungere una descrizione al task dist:
-```
-task dist(dependsOn: [compile, test]) {
-    description = 'Build distribution'
-    doLast {
-        println 'building the distribution'
-    }
-}
-```
-rieseguire il comando del punto 12 e vedere le differenze.
-14. eseguire il comando:
-`gradle help --task dist`
+12. Eseguire il comando:
+`gradle help --task mainTask`
+13. Pubblicare la build del task mainTask:
+`gradle mainTask --scan`

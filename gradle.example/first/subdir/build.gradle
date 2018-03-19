@@ -1,0 +1,11 @@
+description = 'Sub directory'
+
+task subMainTask {
+	description = 'Sub Build Main Task'
+	doFirst {
+		println 'First MainTask'
+	}
+	doLast {
+		println 'Last MainTask'
+	}
+}
