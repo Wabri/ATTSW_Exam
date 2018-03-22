@@ -55,9 +55,10 @@ In ogni caso possiamo visualizzare la versione usata dal wrapper con il comando:
 \begin{verbatim}
     $ ./gradlew --version \end{verbatim}
 Il wrapper è altamente configurabile sia come proprietà sia come versionamento. Per esempio riprendendo il punto 3 della lista precedente, se non si vuole specificare tutte le volte il tipo di distribuzione voluta è possibile inserire un altro campo all’interno del task wrapper \texttt{distributionType} a cui assegneremo \texttt{Wrapper.DistributionType.ALL}:
-\begin{verbatim}
+\begin{lstlisting}[frame=single]
 task wrapper(type: Wrapper) {
     gradleVersion = '4.6'
     distributionType = Wrapper.DistributionType.ALL
-}\end{verbatim}
+}
+\end{lstlisting}
 In questo modo verrà scaricata tutta la distribuzione e non solo i file binari.
