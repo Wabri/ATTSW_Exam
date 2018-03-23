@@ -1,1 +1,8 @@
 \subsection{Deamon}
+Gradle viene eseguito sulla Java virtual machine (JVM) e usa librerie di supporto che necessitano una inizializzazione, entrambi allungano il processo di esecuzione iniziale della build allungando i tempi di attesa. Questo problema viene risolto usando un Deamon che mantiene le informazioni della build in background velocizzando le esecuzioni successive alla prima, mantenendo le informazioni in memoria pronte all'uso. Una build di gradle è possibile eseguirla con o senza il deamon, indicando nelle proprietà di Gradle quando usarlo e se usarlo. Il daemon permette non solo di evitare l'avviamento della JVM, ma ha anche un sistema di cache in cui sono immagazzinati: struttura del progetto, files, tasks e molto altro. Ovviamente se il progetto viene eseguito in contenitori temporanei, tipo un server di continuous integration (CI), è sconsigliato l'uso del deamon in quanto questi non riutilizzano lo stesso processo ma ne creano uno nuovo, quindi l'uso del deamon non solo è inutile ma ridurrà anche le prestazioni dato che dovrà rieseguire il deamon di gradle e ricreare la cache. Per controllare i processi deamon attivi sulla macchina basterà eseguire il comando:
+\begin{verbatim}
+    $ gradle --status \end{verbatim}
+che restituirà il pid, lo stato e la versione di gradle usata dal deamon. Ad esempio se abbiamo un progetto in cui è usata la versione di gradle 3.0 avremo un risultato di questo tipo:
+\begin{verbatim}
+    PID STATUS   INFO
+  16463 IDLE     3.0 \end{verbatim}
