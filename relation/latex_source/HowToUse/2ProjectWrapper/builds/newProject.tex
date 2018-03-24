@@ -1,0 +1,18 @@
+\subsection{Creazione di un nuovo progetto Gradle}
+Creare un progetto Gradle è molto semplice sfruttando direttamente il task di default \textsc{init}. Creiamo una cartella in cui eseguiremo da terminale il comando:
+\begin{verbatim}
+    $ gradle init\end{verbatim}
+Notiamo che nella directory sono stati creati 4 file e 1 cartella:
+\begin{itemize}
+    \item \texttt{build.gradle} e \texttt{settings.gradle}: sono i file di configurazione
+    \item \texttt{gradlew}, \texttt{gradlew.bat} e la directory \texttt{gradle}: sono i file corrispondenti al wrapper
+\end{itemize}
+Abbiamo già trattato il file di configurazione build.gradle (pagina \pageref{buildGradle}). Il file settings.gradle è anch'esso uno script Groovy dove vengono indicati quali progetti parteciperanno alla build. Questo task crea un progetto di default, ma è possibile essere più specifici in quanto il task \textsc{init} con l'opzione \texttt{--type} può assumere come argomento una tipologia di progetto. Assumiamo che il progetto che vogliamo creare sia una applicazione java, il comando da eseguire sarà:
+\begin{verbatim}
+    $ gradle init --type java-application\end{verbatim}
+Rispetto al comando precedente verrà creata una directory \texttt{src} in più che sarà specifica per il linguaggio java:
+\begin{itemize}
+    \item \texttt{main/java/App.java}: che è un file preimpostato il cui contenutò sarà un semplice main che stamperà il consueto \textsc{Hello World!}
+    \item \texttt{test/java/AppTest.java}: in cui viene testato il metodo contenuto nella classe App.java
+\end{itemize}
+Spieghiamo a questo punto i file del wrapper precedentemente indicati.
