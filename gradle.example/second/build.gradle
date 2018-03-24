@@ -34,5 +34,6 @@ repositories {
 
 
 task  wrapper(type: Wrapper) {
+	distributionType = Wrapper.DistributionType.ALL
 	gradleVersion ='4.6'
 }
