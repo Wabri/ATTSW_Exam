@@ -31,3 +31,8 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
+
+
+task  wrapper(type: Wrapper) {
+	gradleVersion ='4.6'
+}
