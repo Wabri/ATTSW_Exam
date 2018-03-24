@@ -36,4 +36,19 @@ task  wrapper(type: Wrapper) {
     distributionType = Wrapper.DistributionType.ALL
 }
 \end{lstlisting}
+    \item Eseguire la build del task \texttt{wrapper} per aggiornare la distribuzione usata dal wrapper
+    \item Visualizzare lo stato attuale dei daemon attualmente in esecuzione:
+\begin{verbatim}
+    $ ./gradlew --status\end{verbatim}
+    \item Eseguire il task \texttt{test} usando il daemon:
+\begin{verbatim}
+    $ ./gradlew --daemon test\end{verbatim}
+    (Notare che se viene rieseguita questa build il tempo di esecuzione risulta essere nullo)
+    \item Eseguire lo stesso task precedente senza usare il daemon:
+\begin{verbatim}
+    $ ./gradlew --no-daemon test\end{verbatim}
+    (Notare che non usando il daemon il tempo di esecuzione non sarà nullo)
+    \item Stoppare il daemon attivo attualmente usato:
+\begin{verbatim}
+    $ ./gradlew --stop <PID>\end{verbatim}
 \end{enumerate}
