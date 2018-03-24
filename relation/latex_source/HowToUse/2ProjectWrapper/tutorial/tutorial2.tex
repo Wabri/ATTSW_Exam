@@ -1,0 +1,39 @@
+\subsection{Tutorial}
+Il tutorial di seguito è possibile anche trovarlo al link: \href{https://github.com/Wabri/ATTSW_Exam/blob/master/gradle.example/second/}{\textsc{github.com/Wabri/ATTSW\_Exam/blob/master/gradle.example/second/}}.
+\begin{enumerate}
+    \item Creare una cartella gradle.example/second
+    \item Eseguire la build:
+\begin{verbatim}
+    $ gradle init --type java-application
+\end{verbatim}
+    \item Usare il wrapper per controllare la versione attualmente in uso dal progetto:
+\begin{verbatim}
+    ./gradlew --version\end{verbatim}
+    \item Cambiare la versione del wrapper alla 2.0:
+\begin{verbatim}
+    $ ./gradlew wrapper --gradle-version 2.0\end{verbatim}
+    \item Controllare se la versione del wrapper è stata cambiata:
+\begin{verbatim}
+    $ ./gradlew --version\end{verbatim}
+    \item Fare l'upgrade alla 3.0 del wrapper usando le properties, modificando il campo \texttt{distribuitionUrl}:
+\begin{verbatim}
+distributionUrl=https\://services.gradle.org/distributions/gradle-3.0-bin.zip \end{verbatim}
+    \item Controllare se la versione del wrapper è stata cambiata
+    \item Modificare il build.gradle per impostare la versione del wrapper alla 4.6:
+\begin{lstlisting}[frame=single]
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.6'
+}
+\end{lstlisting}
+    \item La versione non sarà modificata fintanto che non sarà eseguito il task \texttt{wrapper}, eseguire quindi la build:
+\begin{verbatim}
+    $ ./gradlew wrapper\end{verbatim}
+    \item Controllare se la versione del wrapper è stata cambiata
+    \item Impostare All come tipo di distribuzione da usare per il wrapper, aggiungere quindi il campo \texttt{distributionType}:
+\begin{lstlisting}[frame=single]
+task  wrapper(type: Wrapper) {
+    gradleVersion ='4.6'
+    distributionType = Wrapper.DistributionType.ALL
+}
+\end{lstlisting}
+\end{enumerate}

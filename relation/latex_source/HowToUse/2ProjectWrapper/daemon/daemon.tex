@@ -1,0 +1,28 @@
+\subsection{Deamon}
+Gradle viene eseguito sulla Java virtual machine (JVM) e usa librerie di supporto che necessitano una inizializzazione, entrambi allungano il processo di esecuzione iniziale della build allungando i tempi di attesa. Questo problema viene risolto usando un Daemon che mantiene le informazioni della build in background velocizzando le esecuzioni successive alla prima, mantenendo le informazioni in memoria pronte all'uso. Una build di gradle è possibile eseguirla con o senza il daemon, indicando nelle proprietà di Gradle quando usarlo e se usarlo. Il daemon permette non solo di evitare l'avviamento della JVM, ma ha anche un sistema di cache in cui sono immagazzinati: struttura del progetto, files, tasks e molto altro. Ovviamente se il progetto viene eseguito in contenitori temporanei, tipo un server di continuous integration (CI), è sconsigliato l'uso del daemon in quanto questi non riutilizzano lo stesso processo ma ne creano uno nuovo, quindi l'uso del deamon non solo è inutile ma ridurrà anche le prestazioni dato che dovrà rieseguire il daemon di gradle e ricreare la cache. Per controllare i processi daemon attivi sulla macchina basterà eseguire il comando:
+\begin{verbatim}
+    $ gradle --status \end{verbatim}
+che restituirà il pid, lo stato e la versione di gradle usata dal deamon. Ad esempio se abbiamo un progetto in cui è usata la versione di gradle 3.0 avremo un risultato di questo tipo:
+\begin{verbatim}
+    PID STATUS   INFO
+  16463 IDLE     3.0 \end{verbatim}
+Come già detto è possibile disabilitare il processo deamon, per farlo è necessario modificare il campo \texttt{org.gradle.deamon} con l'assegnazione a false. Le proprietà si trovano seguendo il percorso \texttt{\$HOME/.gradle/gradle.properties}, se il file non esiste basterà crearlo, a questo punto inseriamo in coda al file:
+\begin{lstlisting}[frame=single]
+    org.gradle.deamon=false
+\end{lstlisting}
+Ora tutte le volte che eseguiamo una build non verrà riattivato il deamon. Esistono 2 opzioni che permettono di indicare se usare o no il daemon specificatamente su una build:
+\begin{itemize}
+    \item \texttt{--no-daemon}, che indica di non usare il daemon per questa build
+    \item \texttt{--daemon}, che invece indica di usare il daemon per questa build
+\end{itemize}
+Spesso viene usato questo metodo che risulta essere molto più chiaro soprattutto se la build viene condivisa. Se volessimo stoppare un daemon attivo è possibile farlo con l'opzione \texttt{--stop} seguito dal PID del daemon da stoppare, per esempio se volessimo stoppare un daemon con PID=12812 eseguiremo il comando:
+\begin{verbatim}
+    $ gradle --stop 12812\end{verbatim}
+Il risultato sarà:
+\begin{verbatim}
+    Stopping Daemon(s)
+    1 Daemon stopped\end{verbatim}
+Se abbiamo più daemon attivi e volessimo stopparli tutti è possibile eseguire il comando:
+\begin{verbatim}
+    $ gradle --stop \end{verbatim}
+Evitando quindi di eseguire una cascata di comandi tutti uguali con PID diverso. Questo stopperà tutti i daemon attivi aventi la stessa versione di gradle usato per eseguire il comando.
