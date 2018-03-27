@@ -1,0 +1,20 @@
+\section{Dependency Management}
+Una delle parti più importanti di uno strumento di questo tipo è la gestione delle dipendenze che si divide in 2 parti: incoming files e outgoing files. Gradle ha bisogno di conoscere di cosa il nostro progetto ha bisogno per poter essere compilato ed eseguito le così dette dipendenze (dipendencies) che in questo caso sono gli incoming files. Gli outgoing files sono invece tutto ciò che il progetto produce, definite pubblicazioni (pubblications). Le dipendenze vengono specificate in forma di modules, è quindi necessario indicare dove si trovano questi modules in modo tale che Gradle li possa scaricare e impostare per il progetto che stiamo sviluppando. La posizione dove è possibile trovare i modules è definita repository, è necessario quindi dichiarare le repositories usate per le dipendenze volute. Ci sono 2 tipi di repository: 
+\begin{enumerate}
+    \item esterne, in questo caso la repository si trova in un server online adibito alla raccolta di modules
+    \item interne, la repository è una cartella locale al progetto
+\end{enumerate}
+Per quanto riguarda quelle esterne Gradle si occuperà di scaricarle. E' possibile che alcune dipendenze vengano usate in più progetti, gradle mantiene quindi una cache locale, chiamata dependency cache, in cui salverà i modules già scaricati in modo da evitare di effettuare il download ad ogni build. Possiamo quindi immaginare che il ciclo di risoluzione delle dipendenze esterne sarà questo:
+\begin{enumerate}
+    \item ricerca delle dipendenze esterne nella cache locale
+    \item se non si trovano nella cache locale si controlla se esistono nelle repository specificate
+    \item se sono state trovate, vengono scaricate e inserite nella cache locale
+\end{enumerate}
+Nell'immagine è possibile vedere il percorso specifico che effettua la dependency resolution di Gradle:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\linewidth]{HowToUse/3DependencyManagement/depMan.png}
+\end{figure}
+Analizziamo ora il caso di un progetto java.
+
+\input{HowToUse/3DependencyManagement/javaDep/jD.tex}

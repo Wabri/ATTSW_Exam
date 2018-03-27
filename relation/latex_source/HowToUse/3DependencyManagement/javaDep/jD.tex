@@ -1,0 +1,30 @@
+\subsection{Dichiarazione delle dipendenze}
+Prima di tutto è necessario indicare in che linguaggio il nostro progetto viene rilasciato (consideriamo d'ora in poi solo il caso di Java), per farlo aggiungiamo in testa al file build.gradle:
+\begin{verbatim}
+apply plugin: 'java' \end{verbatim}
+A questo punto per poter usufruire di una dipendenza è necessario specificare da dove Gradle deve andare a prenderla, dobbiamo quindi indicare il repository remoto di riferimento. Se per esempio vogliamo che il nostro repository di riferimento sia Maven allora dobbiamo aggiungere al build.gradle:
+\begin{verbatim}
+repositories {
+    mavenCentral()
+} \end{verbatim}
+In questo modo tutte le dipendenze che andremo a indicare successivamente saranno riferimenti alle pubblicazioni su Maven Central. La dichiarazione delle dipendenze deve essere inserita nel tag \texttt{dependencies} nel build.gradle file. Per esempio vogliamo avere junit 4.12 come dipendenza al nostro progetto Gradle allora dobbiamo aggiungere:
+\begin{verbatim}
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12' 
+} \end{verbatim}
+Osserviamo che nella dichiarazione ci sono 4 diversi indicatori:
+\begin{itemize}
+    \item \texttt{testCompile} indica lo scopo della dipendenza, in questo caso sarà importata durante la compilazione dei test;
+    \item \texttt{group, name, version} corrispondono rispettivamente al groupId (nome del team o della società che ha sviluppato il modulo), artifactId (nome effettivo del modulo) e al version (versione del modulo) definiti su Maven.
+\end{itemize}
+Esiste un modo molto più diretto per indicare una dipendenza:
+\begin{verbatim}
+dependencies {
+    testCompile 'junit:junit:4.12'
+} \end{verbatim}
+Ha lo stesso significato precedente ma ha una forma più compatta, forma che adotta anche la documentazione Maven.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\linewidth]{HowToUse/3DependencyManagement/javaDep/gradleInMavenRepo.png}
+\end{figure} 
+Possiamo notare ora la differenza sostanziale della configurazione delle dipendenze tra il pom.xml di Maven e la build.gradle di Gradle. A questo punto per scaricare le dipendenze si deve eseguire il comando \texttt{dependencies} il cui output restituirà una lista di tutti i task con le relative dipendenze associate.
