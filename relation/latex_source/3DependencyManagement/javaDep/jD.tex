@@ -1,7 +1,22 @@
 \subsection{Java Dependency Management}
-Prima di tutto è necessario indicare in che linguaggio il nostro progetto viene rilasciato (consideriamo d'ora in poi solo il caso di Java), per farlo aggiungiamo in testa al file build.gradle:
-\begin{lstlisting}[frame=single]
+Prima di tutto è necessario indicare in che linguaggio il nostro progetto viene rilasciato (consideriamo d'ora in poi solo il caso di Java), possiamo farlo in 2 modi:
+\begin{enumerate}
+    \item aggiungere al file build.gradle:
+    \begin{lstlisting}[frame=single]
 apply plugin: 'java' \end{lstlisting}
+    \item aggiungere al file build.gradle:
+    \begin{lstlisting}[frame=single]
+plugins {
+    id 'java'
+}
+    \end{lstlisting}
+\end{enumerate}
+Questo aggiungerà vari tasks necessari ad un progetto in java:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\linewidth]{3DependencyManagement/javaDep/javaPluginTasks.png}
+    \label{fig:my_label}
+\end{figure}
 A questo punto per poter usufruire di una dipendenza è necessario specificare da dove Gradle deve andare a prenderla, dobbiamo quindi indicare il repository remoto di riferimento. Se per esempio vogliamo che il nostro repository di riferimento sia Maven allora dobbiamo aggiungere al build.gradle:
 \begin{lstlisting}[frame=single]
 repositories {
@@ -76,13 +91,29 @@ testRuntimeClasspath - Runtime classpath of source set 'test'.
 
 [...]
 
-
 BUILD SUCCESSFUL in 0s
 1 actionable task: 1 executed \end{verbatim}
 Come è possibile notare dall'output esistono molte configurazioni associabili a una dipendenza: compile, default, runtime, testImplementation, e così via, ognuno dei ha uno scopo ben preciso. Possiamo dividere le configurazioni in 3 scopi principali:
 \begin{enumerate}
-    \item implementation
-    \item api
-    \item testImplementation
+    \item \texttt{implementation}, sono le dipendenze necessarie per compilare il source del progetto che non devono comparire nell'API
+    \item \texttt{api}, sono le dipendenze necessarie per compilare il source del progetto che devono comparire nell'API
+    \item \texttt{testImplementation}, sono le dipendenze necessarie per compilare ed eseguire i test associati alla source del progetto
 \end{enumerate}
-% pagina 63 https://docs.gradle.org/current/userguide/userguide.pdf
+I tasks aggiunti da questo plugin assume che il layout del progetto sia di questo tipo:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Directory & Meaning  \\
+\hline
+\hline
+    src/main/java & Sorgente del codice Java\\
+    src/main/resources & Risorse \\
+    src/test/java & Test del sorgente \\
+    src/test/resources & Risorse usate dai test \\
+\hline
+\end{tabular}
+\end{center}
+Tutto questo è automatizzato dal comando:
+\begin{verbatim}
+    $ gradle init --type java-application\end{verbatim}
+Che creerà lo scheletro di un progetto standard Java.
