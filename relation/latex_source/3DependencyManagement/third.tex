@@ -1,4 +1,4 @@
-\section{Dependency Management}
+\section{Dependency Management \& Plugin}
 Una delle parti più importanti di uno strumento di questo tipo è la gestione delle dipendenze che si divide in 2 parti: incoming files e outgoing files. Gradle ha bisogno di conoscere di cosa il nostro progetto ha bisogno per poter essere compilato ed eseguito le così dette dipendenze (dipendencies) che in questo caso sono gli incoming files. Gli outgoing files sono invece tutto ciò che il progetto produce, definite pubblicazioni (pubblications). Le dipendenze vengono specificate in forma di modules, è quindi necessario indicare dove si trovano questi modules in modo tale che Gradle li possa scaricare e impostare per il progetto che stiamo sviluppando. La posizione dove è possibile trovare i modules è definita repository, è necessario quindi dichiarare le repositories usate per le dipendenze volute. Ci sono 2 tipi di repository: 
 \begin{enumerate}
     \item esterne, in questo caso la repository si trova in un server online adibito alla raccolta di modules
@@ -17,4 +17,6 @@ Nell'immagine è possibile vedere il percorso specifico che effettua la dependen
 \end{figure}
 Analizziamo ora il caso di un progetto java.
 
-\input{3DependencyManagement/javaDep/jD.tex}
+\input{3DependencyManagement/javaPlug/jPl.tex}
+
+\input{3DependencyManagement/tutorial/tutorial3.tex}
