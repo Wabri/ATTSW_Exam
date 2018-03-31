@@ -17,6 +17,7 @@
     }
 ```
 Questo dovrà far fallire la build test avviata nel punto precedente.
+
 8. Correggere il test modificando il metodo getGreeting() nella classe App:
 ```
     public String getGreeting() {
@@ -24,6 +25,7 @@ Questo dovrà far fallire la build test avviata nel punto precedente.
     }
 ```
 A questo punto la build test avrà successo.
+
 9. Stoppare la build test usando la combinazione ctrl+d
 10. Eseguire la build di test con continuous sul metodo testAppHasAGreeting(): 
 `$ ./gradlew test --continuous --tests AppTest.testAppHasAGreeting`
@@ -36,6 +38,7 @@ A questo punto la build test avrà successo.
     }
 ```
 Ovviamente la build avrà successo dato che non stiamo modificando il metodo sotto test. Stoppare quindi la build usando ctrl+d.
+
 12. Modificare il metodo getGreeting della classe App in modo da non far fallire la build:
 `    $ ./gradlew test --continuous --tests \*Test`
 13. Aggiungere il MANIFEST alla build.gradle:
