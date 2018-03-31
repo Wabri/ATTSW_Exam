@@ -6,9 +6,9 @@
 - junit 4.12
 4. Eseguire la build dependencies per scaricare le dipendenze
 5. Assicurarsi che junit sia configurato per il testImplementation, com'è possibile notare dal comando precedente la configurazione testCompile è deprecata
-5. Eseguire nuovamente la build dependencies, controllare se la dipendenza junit è stata associata alla configurazione testImplementation
-6. Eseguire la build di test con continuous: `$ ./gradlew test --continuous`
-7. Aggiungere il metodo helloWorldSendTest nella classe di test AppTest:
+6. Eseguire nuovamente la build dependencies, controllare se la dipendenza junit è stata associata alla configurazione testImplementation
+7. Eseguire la build di test con continuous: `$ ./gradlew test --continuous`
+8. Aggiungere il metodo helloWorldSendTest nella classe di test AppTest:
 ```
 @Test 
     public void helloWorldSendTest () {
@@ -18,7 +18,7 @@
 ```
 Questo dovrà far fallire la build test avviata nel punto precedente.
 
-8. Correggere il test modificando il metodo getGreeting() nella classe App:
+9. Correggere il test modificando il metodo getGreeting() nella classe App:
 ```
     public String getGreeting() {
         return "Hello world!";
@@ -26,10 +26,10 @@ Questo dovrà far fallire la build test avviata nel punto precedente.
 ```
 A questo punto la build test avrà successo.
 
-9. Stoppare la build test usando la combinazione ctrl+d
-10. Eseguire la build di test con continuous sul metodo testAppHasAGreeting(): 
+10. Stoppare la build test usando la combinazione ctrl+d
+11. Eseguire la build di test con continuous sul metodo testAppHasAGreeting(): 
 `$ ./gradlew test --continuous --tests AppTest.testAppHasAGreeting`
-11. Modificare il metodo di test helloWorldSendTest:
+12. Modificare il metodo di test helloWorldSendTest:
 ```
     @Test 
     public void helloWorldSendTest () {
@@ -39,9 +39,9 @@ A questo punto la build test avrà successo.
 ```
 Ovviamente la build avrà successo dato che non stiamo modificando il metodo sotto test. Stoppare quindi la build usando ctrl+d.
 
-12. Modificare il metodo getGreeting della classe App in modo da non far fallire la build:
+13. Modificare il metodo getGreeting della classe App in modo da non far fallire la build:
 `    $ ./gradlew test --continuous --tests \*Test`
-13. Aggiungere il MANIFEST alla build.gradle:
+14. Aggiungere il MANIFEST alla build.gradle:
 ```
     jar {
         manifest {
@@ -49,7 +49,7 @@ Ovviamente la build avrà successo dato che non stiamo modificando il metodo sot
         }
     }
 ```
-14. Eseguire la build jar: ` $ ./gradlew jar`
-15. Provare ad eseguire l'applicativo appena creato (che si troverà nella directory build/libs/):
+15. Eseguire la build jar: ` $ ./gradlew jar`
+16. Provare ad eseguire l'applicativo appena creato (che si troverà nella directory build/libs/):
         `$ java -jar build/libs/third.jar`
     Quello che dovrà comparire sarà la stringa di ritorno del metodo getGreeting().
