@@ -68,7 +68,7 @@ task subMainTask {
 8. Eseguire il task subMainTask della build appena creata partendo dalla directory root:
 `gradle -b subdir/build.gradle suMT`
 9. Forzare l'esecuzione di un task marcato come UP-TO-DATE:
-`gradle --rerun-tasks dist`
+`gradle --rerun-tasks maTa
 10. Ottenere la lista dei tasks di default:
 `gradle tasks`
 11. Ottenere la lista di tutti i tasks:
