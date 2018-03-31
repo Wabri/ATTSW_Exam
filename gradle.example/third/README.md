@@ -16,7 +16,7 @@
 	    assertEquals("Hello world!", classUnderTest.getGreeting());
     }
 ```
-    Questo dovrà far fallire la build test avviata nel punto precedente.
+Questo dovrà far fallire la build test avviata nel punto precedente.
 8. Correggere il test modificando il metodo getGreeting() nella classe App:
 ```
     public String getGreeting() {
