@@ -1,0 +1,103 @@
+\subsection{Tutorial}
+Il tutorial di seguito è possibile anche trovarlo al link: \href{https://github.com/Wabri/ATTSW_Exam/blob/master/gradle.example/first/}{\textsc{github.com/Wabri/ATTSW\_Exam/blob/master/gradle.example/first/}}.
+\begin{enumerate}
+    \item Creare una cartella gradle.example/first
+    \item All'interno della nuova cartella creare il file build.gradle contenente:
+\begin{lstlisting}[frame=single]
+description = 'Example of Task'
+
+task dependenceZero {
+	description = 'Build Dependence Zero'
+	doFirst {
+		println 'First Zero'
+	}
+	doLast {
+		println 'Last Zero'
+	}
+}
+
+task dependenceOne(dependsOn: [dependenceZero]) {
+	description = 'Build Dependence One'
+	doFirst {
+		println 'First One'
+	}
+	doLast {
+		println 'Last One'
+	}
+}
+
+task dependenceTwo {
+	description = 'Build Dependence Two'
+	doFirst {
+		println 'First Two'
+	}
+	doLast {
+		println 'Last Two'
+	}
+}
+
+task mainTask(dependsOn: [dependenceOne, dependenceTwo]) {
+	description = 'Build Main Task'
+	doFirst {
+		println 'First MainTask'
+	}
+	doLast {
+		println 'Last MainTask'
+	}
+}
+\end{lstlisting}
+    \item Eseguire la build:
+\begin{verbatim}
+    $ gradle mainTask
+\end{verbatim}
+    \item  Eseguire la build multi-tasks:
+\begin{verbatim}
+    $ gradle dependenceZero dependenceTwo
+\end{verbatim}
+    \item Eseguire la build usando una abbreviazione:
+\begin{verbatim}
+    $ gradle maTa
+\end{verbatim}
+    \item Eseguire la build precedente escludendo il task dependenceOne:
+\begin{verbatim}
+    $ gradle mainTask -x dependenceOne
+\end{verbatim}
+    \item Creare una build differente in una subdirectory rispetto alla posizione iniziale: 
+\begin{lstlisting}[frame=single]
+description = 'Sub directory'
+
+task subMainTask {
+	description = 'Sub Build Main Task'
+	doFirst {
+		println 'First MainTask'
+	}
+	doLast {
+		println 'Last MainTask'
+	}
+}
+\end{lstlisting}
+    \item Eseguire il task subMainTask della build appena creata partendo dalla directory root:
+\begin{verbatim}
+    $ gradle -b subdir/build.gradle suMT        
+\end{verbatim}
+    \item Forzare l'esecuzione di un task marcato come UP-TO-DATE:
+\begin{verbatim}
+    $ gradle --rerun-tasks maTa
+\end{verbatim}
+    \item Ottenere la lista dei tasks di default:
+\begin{verbatim}
+    $ gradle tasks
+\end{verbatim}
+    \item Ottenere la lista di tutti i tasks:
+\begin{verbatim}
+    $ gradle tasks --all
+\end{verbatim}
+    \item Eseguire il comando:
+\begin{verbatim}
+    $ gradle help --task mainTask
+\end{verbatim}
+    \item Pubblicare la build del task mainTask:
+\begin{verbatim}
+    $ gradle mainTask --scan
+\end{verbatim}
+\end{enumerate}
