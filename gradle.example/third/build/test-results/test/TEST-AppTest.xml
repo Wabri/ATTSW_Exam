@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="AppTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2018-03-30T16:09:43" hostname="Fabulinus" time="0.001">
-  <properties/>
-  <testcase name="helloWorldSendTest" classname="AppTest" time="0.001"/>
-  <testcase name="testAppHasAGreeting" classname="AppTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

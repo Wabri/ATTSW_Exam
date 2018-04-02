@@ -65,4 +65,23 @@ Il tutorial di seguito è possibile anche trovarlo al link: \href{https://github
     \begin{verbatim}
         $ java -jar build/libs/third.jar \end{verbatim}
     Quello che dovrà comparire sarà la stringa di ritorno del metodo getGreeting().
+    \item Aggiungere alla lista dei plugin quello di eclipse:
+    \begin{lstlisting}[frame=single]
+    id 'eclipse'
+    \end{lstlisting}
+    \item Eseguire la build di creazione metadati di eclipse:
+    \begin{verbatim}
+        $ ./gradlew eclipse \end{verbatim}
+    \item Importare il progetto su eclipse:
+    \begin{figure}[H]
+        \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=1.0\linewidth, height=7cm]{3DependencyManagement/tutorial/importProject.png}
+        \end{subfigure}
+        \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=1.0\linewidth, height=7cm]{3DependencyManagement/tutorial/importSource.png}
+        \end{subfigure}
+    \end{figure}
+    \item Eseguire la build \texttt{test} usando la view \texttt{Gradle Tasks} di Eclipse
+    \item Se la build di test è andata a buon fine allora eseguire la build \texttt{jar}, sempre usando il \texttt{Gradle Tasks}
+    \item Testare il funzionamento dell'ultima build eseguendo da terminale il solito comando del punto 16
 \end{enumerate}
