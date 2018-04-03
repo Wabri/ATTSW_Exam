@@ -60,14 +60,12 @@ Ovviamente la build avrà successo dato che non stiamo modificando il metodo sot
 ```
 18. Eseguire al build di creazione metadati di eclipse: `$ ./gradlew eclipse`
 19. Importare il progetto su eclipse:
-    \begin{figure}[H]
-        \begin{subfigure}{0.5\textwidth}
-        \includegraphics[width=1.0\linewidth, height=7cm]{3DependencyManagement/tutorial/importProject.png}
-        \end{subfigure}
-        \begin{subfigure}{0.5\textwidth}
-        \includegraphics[width=1.0\linewidth, height=7cm]{3DependencyManagement/tutorial/importSource.png}
-        \end{subfigure}
-    \end{figure}
+
+![importProject](https://github.com/Wabri/ATTSW_Exam/blob/issue-28/gradle.example/third/importProject.png)
+![importProject](https://github.com/Wabri/ATTSW_Exam/blob/issue-28/gradle.example/third/importSource.png)
+
 20. Eseguire la build test usando la view Gradle Tasks di Eclipse
+
 21. Se la build di test è andata a buon fine allora eseguire la build jar, sempre usando il Gradle Tasks
+
 22. Testare il funzionamento dell'ultima build eseguendo da terminale il solito comando del punto 16
