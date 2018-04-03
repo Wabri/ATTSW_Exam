@@ -49,7 +49,23 @@ Ovviamente la build avrà successo dato che non stiamo modificando il metodo sot
         }
     }
 ```
-15. Eseguire la build jar: ` $ ./gradlew jar`
+15. Eseguire la build jar: `$ ./gradlew jar`
 16. Provare ad eseguire l'applicativo appena creato (che si troverà nella directory build/libs/):
         `$ java -jar build/libs/third.jar`
     Quello che dovrà comparire sarà la stringa di ritorno del metodo getGreeting().
+17. Aggiungere alla lista dei plugin quello di eclipse:
+	
+```
+    id 'eclipse'
+```
+18. Eseguire al build di creazione metadati di eclipse: `$ ./gradlew eclipse`
+19. Importare il progetto su eclipse:
+
+![importProject](https://github.com/Wabri/ATTSW_Exam/blob/issue-28/gradle.example/third/importProject.png)
+![importProject](https://github.com/Wabri/ATTSW_Exam/blob/issue-28/gradle.example/third/importSource.png)
+
+20. Eseguire la build test usando la view Gradle Tasks di Eclipse
+
+21. Se la build di test è andata a buon fine allora eseguire la build jar, sempre usando il Gradle Tasks
+
+22. Testare il funzionamento dell'ultima build eseguendo da terminale il solito comando del punto 16
