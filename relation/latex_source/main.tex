@@ -15,25 +15,28 @@
 \usepackage{listings}
 \usepackage{color}
 
-\definecolor{pblue}{rgb}{0.13,0.13,1}
-\definecolor{pgreen}{rgb}{0,0.5,0}
-\definecolor{pred}{rgb}{0.9,0,0}
-\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
-\lstset{language=Java,
-  showspaces=false,
-  showtabs=false,
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  numbers=left,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
   breaklines=true,
-  showstringspaces=false,
-  breakatwhitespace=true,
-  commentstyle=\color{pgreen},
-  keywordstyle=\color{pblue},
-  stringstyle=\color{pred},
-  basicstyle=\ttfamily
+  breakatwhitespace=false,
+  tabsize=3
 }
 
-\title{ATTSW Exam: Gradle come sostituto di Maven}
+\title{\textbf{Advanced Techniques and Tools for Software Development: Gradle Build Tool}}
 \author{Gabriele Puliti - \texttt{5300140} - \href{mailto:gabriele.puliti@stud.unifi.it}{\textit{gabriele.puliti@stud.unifi.it}}}
-\date{Marzo 2018}
+\date{Aprile 2018}
 
 \begin{document}
 
@@ -46,6 +49,14 @@
 
 \begin{flushleft}
 
+\section{Premessa}
+Questa relazione è stata scritta per SO Linux e sviluppo software Java usando IDE open source Eclipse. Tutti i concetti con le dovute precisazioni possono essere considerati anche per altri sistemi operativi, altri linguaggi di programmazione e altri IDE. I dati e le informazioni sono state prese dai manuali di Gradle e nei forum relativi:
+\begin{itemize}
+    \item User manual formato pdf: \textbf{\href{https://docs.gradle.org/current/userguide/userguide.pdf}{docs.gradle.org/current/userguide/userguide.pdf}}
+    \item User manual online: \textbf{\href{https://docs.gradle.org/current/userguide/userguide.html}{docs.gradle.org/current/userguide/userguide.htm}}
+    \item Forum: \textbf{\href{https://discuss.gradle.org/}{discuss.gradle.org}}
+\end{itemize}
+
 \input{0introduction/intro.tex}
 \newpage
 
@@ -56,6 +67,7 @@
 \newpage
 \input{3DependencyManagement/third.tex}
 \newpage
+\input{4IntegrationWithOtherTool/fourth.tex}
 
 \end{flushleft}
 \end{document}
