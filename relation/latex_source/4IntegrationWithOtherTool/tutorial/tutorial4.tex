@@ -1,5 +1,5 @@
 \subsection{Tutorial}
-Il tutorial di seguito è possibile anche trovarlo al link: \href{https://github.com/Wabri/ATTSW_Exam/tree/issue-31/gradle.example/fourth}{\texttt{github.com/Wabri/ATTSW\_Exam/tree/issue-31/gradle.example/fourth}}.
+Il tutorial di seguito è possibile anche trovarlo al link: \href{https://github.com/Wabri/ATTSW_integrationWithOtherTools/tree/master}{\texttt{github.com/Wabri/ATTSW\_integrationWithOtherTools}}.
 \begin{enumerate}
     \item Creare una repository su github e clonarla localmente:
     \begin{figure}[H]
@@ -54,12 +54,12 @@ task  wrapper(type: Wrapper) {
     \item Possiamo ora importare la repository su Eclipse:
     \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{4IntegrationWithOtherTool/tutorial/addExistingLocalGitRepository.png}
+    \includegraphics[width=0.5\linewidth]{4IntegrationWithOtherTool/tutorial/addExistingLocalGitRepository.png}
     \end{figure}
-    \item Importare poi il progetto creato sulla repository:
+    \item Importare poi il progetto creato:
     \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{4IntegrationWithOtherTool/tutorial/localRepositoryEclipse.png}
+    \includegraphics[width=0.6\linewidth]{4IntegrationWithOtherTool/tutorial/localRepositoryEclipse.png}
     \end{figure}
     \item Effettuare il login su \textbf{\href{https://travis-ci.org}{travis-ci.org}} e aggiungere la repository Github creata:
     \begin{figure}[H]
@@ -129,10 +129,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.18.0'
 }\end{lstlisting}
+    Quando si aggiungono nuove dipendenze è importante indicare a eclipse il nuovo classpath, eseguire quindi sia il task \texttt{dependencies} per scaricare le dipendenze che il task \texttt{eclipse} per aggiornare il classpath.
     \item Nei passi successivi si consiglia di creare un nuovo branch per poter vedere meglio la funzionalità di Travis. Lo schema delle classi da creare è il seguente:
-    \begin{figure}[H]
+  \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{4IntegrationWithOtherTool/tutorial/classDiagram.png}
+    \includegraphics[width=1.0\linewidth]{4IntegrationWithOtherTool/tutorial/classDiagramm.png}
   \end{figure}
   Il codice di test di StudentService è:
   \begin{lstlisting}[frame=single]
@@ -272,7 +273,89 @@ public class StudentControllerTest {
 
 }
   \end{lstlisting}
-  A partire da queste 2 classi di test è possibile ricavarsi l'implementazione del codice completo. A questo punto si ha un codice effettivo in cui Travis può eseguire la sua build precedentemente impostata.
+  A partire da queste 2 classi di test è possibile ricavarsi l'implementazione del codice completo:
+         \begin{lstlisting}[frame=single]
+public class Student {
+
+	private String id;
+
+	public Student(String id) {
+		this.id = id;
+	}
+
+	public String getId() {
+		return this.id;
+	}
+
+	@Override
+	public String toString() {
+		return "Student [id=" + id + "]";
+	}
+}
+\end{lstlisting}
+\begin{lstlisting}[frame=single]
+import java.util.List;
+
+import attsw.exam.example.core.Student;
+import attsw.exam.example.core.repository.Repository;
+
+public class StudentService implements IStudentService{
+
+	private Repository repository;
+
+	public StudentService(Repository repository) {
+		this.repository = repository;
+	}
+
+	public List<Student> getAllStudents() {
+		return repository.findAll();
+	}
+
+	public Student oneStudent(String idStudent) {
+		return repository.findOne(idStudent);
+	}
+
+}
+\end{lstlisting}
+\begin{lstlisting}[frame=single]
+import java.util.stream.Collectors;
+
+import attsw.exam.example.core.service.IStudentService;
+
+public class StudentController implements IStudentController {
+
+	private IStudentService studentService;
+
+	public StudentController(IStudentService iStudentService) {
+		this.studentService = iStudentService;
+
+	}
+
+	public String getAllStudents() {
+		return studentService.getAllStudents().stream()
+				.map(student -> student.toString() + System.getProperty("line.separator"))
+				.collect(Collectors.joining());
+	}
+
+	public String getOneStudent(String idStudent) {
+		return studentService.oneStudent(idStudent).toString();
+	}
+}
+\end{lstlisting}
+\begin{lstlisting}[frame=single]
+import java.util.List;
+
+import attsw.exam.example.core.Student;
+
+public interface Repository {
+
+	public List<Student> findAll();
+
+	public Student findOne(String id);
+
+}
+\end{lstlisting}
+  A questo punto si ha un codice effettivo in cui Travis può eseguire la build precedentemente impostata.
   \item Andiamo ora a generare dei report sul codice appena scritto, per farlo aggiungiamo ai plugin di Gradle sia Jacoco che Sonarqube:
     \begin{lstlisting}[frame=single]
 plugins {
@@ -306,7 +389,7 @@ sonarqube {
     }
 }
     \end{lstlisting}
-    Per eseguire Sonarqube useremo un contenitore server di Docker che genererà una pagina accessibile direttamente dal browser, inoltre Sonarqube avrà bisogno di un database server che creeremo sempre con Docker. Jacoco verrà usato da Sonarqube per generare il rapporto di code coverage. Entrambi i server verranno eseguiti compilando un docker-compose, per poter compilare ed eseguire entrambi i server Docker è necessario installare sia docker che docker-compose. All'interno della cartella del progetto creiamo un file chiamato \textbf{docker-compose.yml} in cui scriveremo:
+    Per eseguire Sonarqube useremo un contenitore server di Docker che genererà una pagina accessibile direttamente dal browser, inoltre Sonarqube avrà bisogno di un database server che creeremo sempre con Docker. Jacoco sarà usato invece da Sonarqube per generare il rapporto di code coverage. Entrambi i server verranno eseguiti compilando un docker-compose, per poter compilare ed eseguire entrambi i server Docker è necessario installare sia docker che docker-compose. All'interno della cartella del progetto creiamo un file chiamato \textbf{docker-compose.yml} in cui scriveremo:
     \begin{minted}[frame=single, linenos]{yaml}
 version: "2"
 
@@ -392,4 +475,415 @@ sonarqube_1  | 2018.04.10 11:49:53 INFO  app[][o.s.a.SchedulerImpl] SonarQube is
     \begin{verbatim}
         $ docker rm <nome_del_contenitore>
     \end{verbatim}
+    \item Potremmo usare Docker anche per creare un server database su cui testare la nostra applicazione, nel nostro caso per creare un vero e proprio database in cui inserire la lista di studenti. Useremo le dipendenze: MongoDB e Jongo per creare il database, FakeMongo per i test. Aggiorniamo quindi il campo \texttt{dependencies} del file di configurazione di gradle:
+    \begin{lstlisting}[frame=single]
+dependencies {
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.18.0'
+    testImplementation 'com.github.fakemongo:fongo:1.6.5'
+    testImplementation 'ch.qos.logback:logback-classic:1.1.1'
+    implementation 'org.mongodb:mongo-java-driver:2.14.3'
+    implementation 'org.jongo:jongo:1.3.0'
+}
+    \end{lstlisting}
+    La dipendenza \texttt{ch.qos.logback:logback-classic:1.1.1} è una dipendenza di FakeMongo necessaria. Da terminale eseguiamo ora i task \texttt{dependencies} per scaricare le dipendenze e \texttt{eclipse} per aggiornare il classpath:
+    \begin{verbatim}
+        $ ./gradlew dependencies ; ./gradlew eclipse
+    \end{verbatim}
+    \item Aggiorniamo quindi lo schema delle classi aggiungendo la classe \texttt{MongoRepository} che implementerà la classe \texttt{Repository}:
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=1.1\linewidth]{4IntegrationWithOtherTool/tutorial/classDiagramm2.png}
+  \end{figure}
+  Il codice di test per questa nuova classe sarà il seguente:
+  \begin{lstlisting}[frame=single]
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
+import com.github.fakemongo.Fongo;
+import com.mongodb.MongoClient;
+
+import attsw.exam.example.core.repository.Repository;
+import attsw.exam.example.core.repository.mongo.MongoRepository;
+
+public class MongoRepositoryTest {
+
+	Repository mongoRepository;
+	DBCollection students;
+
+	@Before
+	public void init() {
+		MongoClient mongoClient = new Fongo("Mongo Server").getMongo();
+		DB db = mongoClient.getDB("School");
+		db.getCollection("Students").drop();
+		mongoRepository = new MongoRepository(mongoClient);
+		students = db.getCollection("Students");
+	}
+
+	@Test
+	public void testGetAllStudentsEmpty() {
+		assertTrue(mongoRepository.findAll().isEmpty());
+	}
+
+	@Test
+	public void testOneStudent() {
+		addStudentToStudentsCollection("id1");
+		assertEquals(1, mongoRepository.findAll().size());
+	}
+
+	@Test
+	public void testMoreThanOneStudentsInCollection() {
+		addStudentToStudentsCollection("id1");
+		addStudentToStudentsCollection("id2");
+		List<Student> listOfStudents = mongoRepository.findAll();
+		assertEquals(2, listOfStudents.size());
+		assertEquals("id1", listOfStudents.get(0).getId());
+		assertEquals("id2", listOfStudents.get(1).getId());
+	}
+
+	@Test
+	public void testStudentNotFound() {
+		assertNull(mongoRepository.findOne("id1"));
+	}
+
+	@Test
+	public void testStudentFound() {
+		addStudentToStudentsCollection("id1");
+		addStudentToStudentsCollection("id2");
+		Student student = mongoRepository.findOne("id2");
+		assertNotNull(student);
+		assertEquals("id2", student.getId());
+	}
+
+	private void addStudentToStudentsCollection(String idValue) {
+		BasicDBObject document = new BasicDBObject();
+		document.put("id", idValue);
+		students.insert(document);
+	}
+}
+  \end{lstlisting}
+  Questa classe di test servirà per la creazione della classe MongoRepository:
+  \begin{lstlisting}[frame=single]
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+
+import attsw.exam.example.core.Student;
+import attsw.exam.example.core.repository.Repository;
+
+public class MongoRepository implements Repository {
+	
+	DBCollection students;
+
+	public MongoRepository(MongoClient mongoClient) {
+		students = mongoClient.getDB("School").getCollection("Students");
+	}
+
+	@Override
+	public List<Student> findAll() {
+		DBCursor cursor = students.find();
+		return StreamSupport.stream(cursor.spliterator(), false).map(element -> new Student((String) element.get("id")))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public Student findOne(String id) {
+		BasicDBObject element = new BasicDBObject();
+		element.put("id", id);
+		DBObject findOne = students.findOne(element);
+		return findOne != null ? new Student((String) findOne.get("id")) : null;
+	}
+
+}
+  \end{lstlisting}
+  I test avranno successo grazie al database fittizio creato da Fongo.
+  \item Per poter testare il funzionamento di MongoRepository con un vero database creeremo la classe di Integration Test:
+   \begin{lstlisting}[frame=single]
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
+import java.net.UnknownHostException;
+
+import attsw.exam.example.core.repository.Repository;
+import attsw.exam.example.core.repository.mongo.MongoRepository;
+
+public class MongoRepositoryIT {
+
+	Repository mongoRepository;
+	DBCollection students;
+
+	@Before
+	public void init() {
+		MongoClient mongoClient = new MongoClient();
+		DB db = mongoClient.getDB("School");
+		db.getCollection("Students").drop();
+		mongoRepository = new MongoRepository(mongoClient);
+		students = db.getCollection("Students");
+	}
+
+	@Test
+	public void testGetAllStudentsEmpty() {
+		assertTrue(mongoRepository.findAll().isEmpty());
+	}
+
+	@Test
+	public void testOneStudent() {
+		addStudentToStudentsCollection("id1");
+		assertEquals(1, mongoRepository.findAll().size());
+	}
+
+	@Test
+	public void testMoreThanOneStudentsInCollection() {
+		addStudentToStudentsCollection("id1");
+		addStudentToStudentsCollection("id2");
+		List<Student> listOfStudents = mongoRepository.findAll();
+		assertEquals(2, listOfStudents.size());
+		assertEquals("id1", listOfStudents.get(0).getId());
+		assertEquals("id2", listOfStudents.get(1).getId());
+	}
+
+	@Test
+	public void testStudentNotFound() {
+		assertNull(mongoRepository.findOne("id1"));
+	}
+
+	@Test
+	public void testStudentFound() {
+		addStudentToStudentsCollection("id1");
+		addStudentToStudentsCollection("id2");
+		Student student = mongoRepository.findOne("id2");
+		assertNotNull(student);
+		assertEquals("id2", student.getId());
+	}
+
+	private void addStudentToStudentsCollection(String idValue) {
+		BasicDBObject document = new BasicDBObject();
+		document.put("id", idValue);
+		students.insert(document);
+	}
+}
+  \end{lstlisting}
+  Notiamo che in questa classe di test la differenza è che non useremo Fongo ma un vero e proprio client Mongo. Questo test non potrà funzionare, infatti darà un errore di tipo \texttt{MongoTimeoutException}:
+  \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{4IntegrationWithOtherTool/tutorial/mongoDockerFailTest.png}
+    \end{figure}
+    Che indica semplicemente che la classe di test non riesce a collegarsi al database, che effettivamente non esiste. Prima di creare un contenitore database facciamo un refactor delle 2 classi di test del MongoRepository per rendere più chiara la loro implementazione:
+  \begin{lstlisting}[frame=single]
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.net.UnknownHostException;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
+
+import attsw.exam.example.core.repository.Repository;
+import attsw.exam.example.core.repository.mongo.MongoRepository;
+
+public abstract class AbstractMongoRepositoryTest {
+
+	Repository mongoRepository;
+	DBCollection students;
+
+	@Before
+	public void init() throws UnknownHostException {
+		MongoClient mongoClient = extractMongoClient();
+		DB db = mongoClient.getDB("School");
+		db.getCollection("Students").drop();
+		mongoRepository = new MongoRepository(mongoClient);
+		students = db.getCollection("Students");
+	}
+
+	@Test
+	public void testGetAllStudentsEmpty() {
+		assertTrue(mongoRepository.findAll().isEmpty());
+	}
+
+	@Test
+	public void testOneStudent() {
+		addStudentToStudentsCollection("id1");
+		assertEquals(1, mongoRepository.findAll().size());
+	}
+
+	@Test
+	public void testMoreThanOneStudentsInCollection() {
+		addStudentToStudentsCollection("id1");
+		addStudentToStudentsCollection("id2");
+		List<Student> listOfStudents = mongoRepository.findAll();
+		assertEquals(2, listOfStudents.size());
+		assertEquals("id1", listOfStudents.get(0).getId());
+		assertEquals("id2", listOfStudents.get(1).getId());
+	}
+
+	@Test
+	public void testStudentNotFound() {
+		assertNull(mongoRepository.findOne("id1"));
+	}
+
+	@Test
+	public void testStudentFound() {
+		addStudentToStudentsCollection("id1");
+		addStudentToStudentsCollection("id2");
+		Student student = mongoRepository.findOne("id2");
+		assertNotNull(student);
+		assertEquals("id2", student.getId());
+	}
+
+	private void addStudentToStudentsCollection(String idValue) {
+		BasicDBObject document = new BasicDBObject();
+		document.put("id", idValue);
+		students.insert(document);
+	}
+
+
+	protected abstract MongoClient extractMongoClient() throws UnknownHostException;
+}
+  \end{lstlisting}
+  Di conseguenza l'implementazione del metodo extractMongoclient() verrà fatta nelle classi effettive di test:
+  \begin{lstlisting}[frame=single]
+import com.github.fakemongo.Fongo;
+import com.mongodb.MongoClient;
+
+public class MongoRepositoryTest extends AbstractMongoRepositoryTest {
+
+	@Override
+	protected MongoClient extractMongoClient() {
+		return new Fongo("Mongo Server").getMongo();
+	}
+
+}
+  \end{lstlisting}
+    \begin{lstlisting}[frame=single]
+import java.net.UnknownHostException;
+
+import com.mongodb.MongoClient;
+
+public class MongoRepositoryIT extends AbstractMongoRepositoryTest {
+
+	@Override
+	protected MongoClient extractMongoClient() throws UnknownHostException {
+		return new MongoClient();
+	}
+
+}
+  \end{lstlisting}
+  A questo punto possiamo usare un contenitore Docker per creare il nostro database Mongo, per farlo eseguiamo su terminale:
+  \begin{verbatim}
+        $ docker run -p 27017:27017 --rm mongo
+    \end{verbatim}
+    Questo comando scaricherà il contenitore chiamato mongo e lo eseguirà sulla porta 27017. A questo punto possiamo eseguire la classe di test MongoRepositoryIT che sfruttando questo contenitore eseguirà con successo i test:
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{4IntegrationWithOtherTool/tutorial/mongoDockerSuccessTest.png}
+    \end{figure}
+    \item Il problema ora è eseguire gli integration test anche su Travis, per farlo useremo la dipendenza \textbf{\href{https://github.com/testcontainers/testcontainers-java}{testcontainers}} che consentirà di creare un containers leggero per il test in cui viene usato. Aggiungiamo quindi la dipendenza \texttt{org.testcontainers:database-commons:1.7.2} al file di build.gradle:
+    \begin{lstlisting}[frame=single]
+dependencies {
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.18.0'
+    testImplementation 'com.github.fakemongo:fongo:1.6.5'
+    testImplementation 'ch.qos.logback:logback-classic:1.1.1'
+    testImplementation 'org.testcontainers:database-commons:1.7.2'
+    implementation 'org.mongodb:mongo-java-driver:2.14.3'
+    implementation 'org.jongo:jongo:1.3.0'
+}
+    \end{lstlisting}
+Useremo questa dipendenza nella nuova classe \texttt{MongoRepositoryWithContainerIT}:
+    \begin{lstlisting}[frame=single]
+import java.net.UnknownHostException;
+
+import org.junit.ClassRule;
+import org.testcontainers.containers.GenericContainer;
+
+import com.mongodb.MongoClient;
+
+public class MongoRepositoryWithContainerIT extends AbstractMongoRepositoryTest {
+
+	@SuppressWarnings("rawtypes")
+	@ClassRule
+	public static GenericContainer mongo = new GenericContainer("mongo:latest").withExposedPorts(27017);
+
+	@Override
+	protected MongoClient extractMongoClient() throws UnknownHostException {
+		return new MongoClient(mongo.getContainerIpAddress(), mongo.getMappedPort(27017));
+	}
+}
+    \end{lstlisting}
+    Come ultimo passo è necessario indicare a travis che per eseguire la build deve installare il servizio docker con database mongo, modifichiamo quindi il .travis.yml come segue:
+    \begin{minted}[frame=single, linenos]{yaml}
+language: java
+
+jdk:
+  - oraclejdk8
+  - oraclejdk9
+
+services:
+  - docker
+
+# cache settings
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+install:
+  - docker pull mongo
+
+script:
+- ./tutorial/gradlew --no-daemon -b tutorial/build.gradle test
+  \end{minted}
+  \item Se la build continuerà a fallire il motivo è che non abbiamo escluso la classe MongoRepositoryIT che necessita il contenitore docker in esecuzione, modifichiamo il file di configurazione build.gradle aggiungendo:
+    \begin{minted}[frame=single, linenos]{java}
+test {
+    failFast = true
+    exclude "**/MongoRepositoryIT.*"   
+}
+  \end{minted}
+  L'indicazione di failFast è stata spiegata a pag.\pageref{failfast}. Possiamo anche indicare questa opzione direttamente nello script di travis:
+      \begin{minted}[frame=single, linenos]{yaml}
+script:
+- ./tutorial/gradlew --no-daemon -b tutorial/build.gradle test --fail-fast
+  \end{minted}
+  A questo punto i test avranno tutti successo anche su travis-ci.
 \end{enumerate}

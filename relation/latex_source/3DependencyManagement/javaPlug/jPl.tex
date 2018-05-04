@@ -115,10 +115,10 @@ Directory & Meaning  \\
 Tutto questo è automatizzato dal comando:
 \begin{verbatim}
     $ gradle init --type java-application\end{verbatim}
-Che creerà lo scheletro di un progetto standard Java per sviluppare un applicativo (nel caso si voglia sviluppare una libraria si deve usare il tipo \texttt{java-library}). Il task sicuramente più usato in un progetto è \texttt{test}, questo task è una istanza della classe \texttt{Test} definita da Gradle (consultabile nell'API: \textit{\href{https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.Test.html}{docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.Test.html}}) che individua automaticamente tutti gli unit test all'interno della cartella in cui si trova il codice di test, di default nella directory: \texttt{src/test/java}, e li esegue. Può far molto comodo sapere che esiste un opzione \texttt{--continuous} che consente di eseguire un task tutte le volte che viene modificato un file del progetto:
+Che creerà lo scheletro di un progetto standard Java per sviluppare un applicativo (nel caso si voglia sviluppare una libreria si deve usare il tipo \texttt{java-library}). Il task sicuramente più usato in un progetto è \texttt{test}, questo task è una istanza della classe \texttt{Test} definita da Gradle (consultabile nell'API: \textit{\href{https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.Test.html}{docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.Test.html}}) che individua automaticamente tutti gli unit test all'interno della cartella in cui si trova il codice di test, di default nella directory: \texttt{src/test/java}, e li esegue. Può far molto comodo sapere che esiste un opzione \texttt{--continuous} che consente di eseguire un task tutte le volte che viene modificato un file del progetto:
 \begin{verbatim}
     $ gradle test --continuous\end{verbatim}
-Questo permetterà di controllare ad ogni modifica se la build fallirà o avrà successo. Inolte la build di questo task eseguirà tutti i test dal primo all'ultimo anche se uno di questi fallisce, per progetti di grosse dimensioni quindi questo potrebbe essere uno spreco di risorse. Per indicare alla build di fallire appena un test fallisce ci sono diversi modi:
+Questo permetterà di controllare ad ogni modifica se la build fallirà o avrà successo. Inolte la build di questo task eseguirà tutti i test dal primo all'ultimo anche se uno di questi fallisce, per progetti di grosse dimensioni quindi questo potrebbe essere uno spreco di risorse. \label{failfast} Per indicare alla build di fallire appena un test fallisce ci sono diversi modi:
 \begin{enumerate}
     \item Settare la proprietà \texttt{failFast} a true per il task \texttt{test} direttamente nel file di configurazione gradle:
     \begin{lstlisting}[frame=single]
@@ -150,7 +150,7 @@ Questo permetterà di diminuire i tempi di attesa non necessari, facendo fallire
         }
     }
     \end{lstlisting}
-    \item Indicare direttamente da linea di comanda per un unica build, usando l'opzione \texttt{--tests}:
+    \item Indicare direttamente da linea di comando per un unica build, usando l'opzione \texttt{--tests}:
     \begin{verbatim}
     $ gradle test --tests <filtro> \end{verbatim}
     Per esempio se volessimo eseguire il metodo di test someFeature della classe SomeTest che si trova nel package org.example.app allora dovremmo eseguire:
@@ -160,7 +160,7 @@ Questo permetterà di diminuire i tempi di attesa non necessari, facendo fallire
     \begin{verbatim}
     $ gradle test --tests \*IntegTest \end{verbatim}
 \end{enumerate}
-Ovviamente il secondo caso è quello comunemente usato per eseguire build specifici su una singola classe, evitando di modificare i filtri nel build.gradle. Un altro task importante per il rilascio di un applicativo è \texttt{jar} che crea un file JAR contenente: classi, files e risorse usate. Per essere eseguito questo task necessita la definizione di alcune proprietà:
+Ovviamente il secondo caso è quello comunemente usato per eseguire build specifiche su una singola classe, evitando di modificare i filtri nel build.gradle. Un altro task importante per il rilascio di un applicativo è \texttt{jar} che crea un file JAR contenente: classi, files e risorse usate. Per essere eseguito questo task necessita la definizione di alcune proprietà:
 \begin{itemize}
     \item Titolo del progetto 
     \item Versione del progetto 
