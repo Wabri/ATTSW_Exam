@@ -1,6 +1,3 @@
-[submodule "gradle.example/ATTSW_integrationWithOtherTools"]
-	path = gradle.example/ATTSW_integrationWithOtherTools
-	url = git@github.com:Wabri/ATTSW_integrationWithOtherTools.git
 [submodule "gradle.example/fourth/ATTSW_integrationWithOtherTools"]
 	path = gradle.example/fourth/ATTSW_integrationWithOtherTools
 	url = git@github.com:Wabri/ATTSW_integrationWithOtherTools.git
