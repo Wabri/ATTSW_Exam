@@ -61,9 +61,6 @@ Ovviamente la build avrà successo dato che non stiamo modificando il metodo sot
 18. Eseguire al build di creazione metadati di eclipse: `$ ./gradlew eclipse`
 19. Importare il progetto su eclipse:
 
-![importProject](https://github.com/Wabri/ATTSW_Exam/blob/master/gradle.example/third/importProject.png)
-
-![importProject](https://github.com/Wabri/ATTSW_Exam/blob/master/gradle.example/third/importSource.png)
 
 20. Eseguire la build test usando la view Gradle Tasks di Eclipse
 
