@@ -457,7 +457,7 @@ A questo punto facciamo ripartire il contenitore, eseguendo in un altro terminal
    $ docker-compose restart sonarqube
 ```
 
-Una volta completato questo comando possiamo controllare se effettivamente il server sta funzionando visitando la pagina [http://localhost:9000](https/localhost:9000):
+Una volta completato questo comando possiamo controllare se effettivamente il server sta funzionando visitando la pagina [https://localhost:9000/](https://localhost:9000/):
 
 ![sonarQubeFirst.png](../../relation/latex_source/4IntegrationWithOtherTool/tutorial/sonarQubeFirst.png)
 
