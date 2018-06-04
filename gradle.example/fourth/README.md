@@ -438,7 +438,7 @@ volumes:
   postgresql_data:
 ```
 
-Questo file è possibile trovarlo nella pagina Github della Docker image di Sonarqube: [https://github.com/SonarSource/docker-sonarqube/blob/master/recipes.md](github.com/SonarSource/docker-sonarqube/blob/master/recipes.md). Componiamo questo contenitore andando a eseguire il comando:
+Questo file è possibile trovarlo nella pagina Github della Docker image di Sonarqube: [https://github.com/SonarSource/docker-sonarqube/blob/master/recipes.md](https://github.com/SonarSource/docker-sonarqube/blob/master/recipes.md). Componiamo questo contenitore andando a eseguire il comando:
 
 ```
    $ docker-compose up
