@@ -1,5 +1,5 @@
 1.  Creare una repository su github e clonarla localmente:
-![../../relation/latex_source/4IntegrationWithOtherTool/tutorial/githubRepo.png](githubRepo.png)
+![githubRepo.png](../../relation/latex_source/4IntegrationWithOtherTool/tutorial/githubRepo.png)
 2. Nella repository locale creare una cartella chiamata tutorial:
 ![localGithubRepo.png](localGithubRepo.png)
 3. Spostarsi nella cartella appena creata e eseguire la build Gradle \texttt{init} per una applicazione java:
